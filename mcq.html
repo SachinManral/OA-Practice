@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS Placement OA — 200 MCQs</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh}
+header{background:#161b27;border-bottom:1px solid #2d3748;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+header h1{font-size:18px;font-weight:600;color:#e2e8f0}
+header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;border-radius:20px}
+.tab-bar{display:flex;gap:6px;padding:14px 20px;overflow-x:auto;background:#0f1117;border-bottom:1px solid #1a2035;flex-wrap:wrap}
+.tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid #2d3748;color:#a0aec0;background:transparent;white-space:nowrap;transition:all .15s}
+.tab:hover{border-color:#4a5568;color:#e2e8f0}
+.tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.mode-bar{display:flex;gap:10px;padding:12px 20px;align-items:center;border-bottom:1px solid #1a2035}
+.mode-btn{padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #2d3748;color:#a0aec0;background:transparent}
+.mode-btn.active{background:#1a2035;color:#e2e8f0;border-color:#4a5568}
+.stat-row{display:flex;gap:16px;margin-left:auto;font-size:12px;color:#718096}
+.stat-row b{color:#e2e8f0}
+.container{max-width:860px;margin:0 auto;padding:16px 20px}
+
+/* Browse mode */
+.question-block{background:#161b27;border:1px solid #1e2d45;border-radius:10px;padding:18px;margin-bottom:12px}
+.q-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.q-num{min-width:28px;height:28px;border-radius:6px;background:#1e2d45;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#60a5fa;flex-shrink:0}
+.q-subject{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-left:auto;flex-shrink:0}
+.q-text{font-size:14px;line-height:1.65;color:#e2e8f0}
+.q-code{font-family:'Courier New',monospace;font-size:12px;background:#0a0e17;border:1px solid #1e2d45;border-radius:6px;padding:10px 12px;margin:10px 0;white-space:pre;overflow-x:auto;color:#93c5fd;line-height:1.5}
+.options-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.opt{padding:8px 12px;border-radius:6px;font-size:13px;border:1px solid #2d3748;cursor:pointer;display:flex;align-items:flex-start;gap:8px;transition:all .12s;color:#cbd5e0;background:transparent;text-align:left;width:100%}
+.opt:hover{border-color:#4a5568;background:#1a2035}
+.opt-label{font-weight:600;min-width:18px;font-size:12px;color:#60a5fa;margin-top:1px;flex-shrink:0}
+.opt.correct{background:#052e16;border-color:#166534;color:#bbf7d0}
+.opt.correct .opt-label{color:#4ade80}
+.opt.wrong{background:#1f0a0a;border-color:#7f1d1d;color:#fca5a5}
+.opt.wrong .opt-label{color:#f87171}
+.opt.reveal{background:#052e16;border-color:#166534;color:#bbf7d0}
+.opt.reveal .opt-label{color:#4ade80}
+.opt:disabled{cursor:default}
+.answer-reveal{margin-top:10px;padding:10px 12px;background:#0d1f2d;border-left:3px solid #2563eb;border-radius:0 6px 6px 0;font-size:12.5px;color:#93c5fd;line-height:1.6}
+.answer-reveal b{color:#60a5fa}
+.toggle-ans{margin-top:8px;font-size:12px;color:#4a9eff;cursor:pointer;text-decoration:underline;display:inline-block;background:none;border:none;padding:0}
+
+/* Quiz mode */
+.quiz-card{background:#161b27;border:1px solid #1e2d45;border-radius:12px;padding:24px}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.quiz-subj{font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px}
+.quiz-timer{padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;background:#1a2035;color:#e2e8f0}
+.quiz-timer.warn{background:#2d1a0a;color:#fb923c}
+.progress-wrap{height:4px;background:#1a2035;border-radius:2px;margin-bottom:20px}
+.progress-fill{height:4px;border-radius:2px;background:#2563eb;transition:width .3s}
+.quiz-qnum{font-size:11px;color:#718096;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
+.quiz-qtext{font-size:15px;line-height:1.7;color:#e2e8f0;margin-bottom:16px;font-weight:400}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+.nav-btn{padding:8px 22px;border-radius:8px;font-size:14px;cursor:pointer;border:none;font-weight:500}
+.nav-btn.primary{background:#2563eb;color:#fff}
+.nav-btn.primary:hover{background:#1d4ed8}
+.skip-btn{font-size:13px;color:#718096;background:none;border:none;cursor:pointer;text-decoration:underline}
+.result-card{background:#161b27;border:1px solid #1e2d45;border-radius:12px;padding:32px;text-align:center}
+.score-ring{width:100px;height:100px;border-radius:50%;border:4px solid #2563eb;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px}
+.score-ring .pct{font-size:28px;font-weight:700;color:#e2e8f0}
+.score-ring .lbl{font-size:10px;color:#718096}
+.result-card h2{font-size:20px;font-weight:600;margin-bottom:6px}
+.result-card p{font-size:13px;color:#718096;margin-bottom:24px}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.rs{background:#0f1117;border-radius:8px;padding:14px}
+.rs-num{font-size:22px;font-weight:600}
+.rs-lbl{font-size:11px;color:#718096;margin-top:2px}
+.action-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.action-row button{padding:9px 22px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;border:1px solid #2d3748;color:#e2e8f0;background:transparent}
+.action-row button.primary{background:#2563eb;color:#fff;border-color:#2563eb}
+.no-q{text-align:center;padding:60px 20px;color:#718096;font-size:14px}
+.quiz-start{text-align:center;padding:40px 20px}
+.quiz-start h2{font-size:20px;color:#e2e8f0;margin-bottom:8px}
+.quiz-start p{font-size:13px;color:#718096;margin-bottom:24px}
+.quiz-start .big-btn{padding:12px 32px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.count-sel{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.count-sel button{padding:6px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #2d3748;color:#a0aec0;background:transparent}
+.count-sel button.active{background:#2563eb;color:#fff;border-color:#2563eb}
+
+/* Colors per subject */
+.dsa{background:#0e2341;color:#60a5fa}
+.os{background:#1a2e1a;color:#4ade80}
+.dbms{background:#2d1810;color:#fb923c}
+.cn{background:#1a1040;color:#a78bfa}
+.oop{background:#1a0a2e;color:#e879f9}
+.coa{background:#2d1a0a;color:#fbbf24}
+.se{background:#0f2d2d;color:#2dd4bf}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CS Placement OA &mdash; 200 MCQs</h1>
+  <span id="headerCount">200 questions</span>
+</header>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab active" onclick="filterSubject('ALL')">All (200)</button>
+  <button class="tab" onclick="filterSubject('DSA')">DSA (35)</button>
+  <button class="tab" onclick="filterSubject('OS')">OS (30)</button>
+  <button class="tab" onclick="filterSubject('DBMS')">DBMS (30)</button>
+  <button class="tab" onclick="filterSubject('CN')">Networks (30)</button>
+  <button class="tab" onclick="filterSubject('OOP')">OOP (25)</button>
+  <button class="tab" onclick="filterSubject('COA')">COA (25)</button>
+  <button class="tab" onclick="filterSubject('SE')">Soft. Engg (25)</button>
+</div>
+
+<div class="mode-bar">
+  <button class="mode-btn active" id="browseBtn" onclick="setMode('browse')">Browse Mode</button>
+  <button class="mode-btn" id="quizBtn" onclick="setMode('quiz')">Quiz Mode</button>
+  <div class="stat-row">
+    <span>Answered: <b id="answeredCount">0</b></span>
+    <span>Correct: <b id="correctCount" style="color:#4ade80">0</b></span>
+  </div>
+</div>
+
+<div class="container" id="main"></div>
+
+<script>
+const Q = [
+// ─── DSA (1–35) ───────────────────────────────────────────────────────────
+{id:1,s:'DSA',q:'What is the time complexity of binary search on a sorted array of n elements?',o:['O(n)','O(log n)','O(n log n)','O(1)'],a:1,e:'Binary search halves the search space each step → O(log n).'},
+{id:2,s:'DSA',q:'Which data structure follows the Last-In-First-Out (LIFO) principle?',o:['Queue','Deque','Stack','Linked List'],a:2,e:'Stack uses LIFO — last pushed element is the first to be popped.'},
+{id:3,s:'DSA',q:'What is the worst-case time complexity of QuickSort?',o:['O(n log n)','O(n)','O(n²)','O(log n)'],a:2,e:'When pivot is always the smallest or largest element (already sorted array), QuickSort degrades to O(n²).'},
+{id:4,s:'DSA',q:'In a min-heap, the root node always contains:',o:['The maximum element','The median element','The minimum element','A random element'],a:2,e:'By the heap property, in a min-heap every parent is ≤ its children, so root = minimum.'},
+{id:5,s:'DSA',q:'What is the space complexity of Merge Sort?',o:['O(1)','O(log n)','O(n)','O(n log n)'],a:2,e:'Merge Sort requires an auxiliary array of size n for merging → O(n) extra space.'},
+{id:6,s:'DSA',q:'Which traversal of a Binary Search Tree (BST) produces nodes in sorted order?',o:['Preorder','Postorder','Inorder','Level order'],a:2,e:'Inorder traversal (Left → Root → Right) of a BST visits nodes in ascending order.'},
+{id:7,s:'DSA',q:'What is the time complexity of inserting an element at the beginning of an unsorted array?',o:['O(1)','O(log n)','O(n)','O(n²)'],a:2,e:'All existing elements must shift one position right → O(n).'},
+{id:8,s:'DSA',q:'BFS (Breadth-First Search) internally uses which data structure?',o:['Stack','Priority Queue','Queue','Deque'],a:2,e:'BFS uses a Queue to process nodes level by level.'},
+{id:9,s:'DSA',q:'Which sorting algorithm is both stable and has O(n log n) worst-case time complexity?',o:['QuickSort','HeapSort','MergeSort','SelectionSort'],a:2,e:'Merge Sort is stable (preserves relative order of equal elements) and always O(n log n).'},
+{id:10,s:'DSA',q:'The height of a balanced BST with n nodes is:',o:['O(n)','O(√n)','O(log n)','O(n²)'],a:2,e:'A balanced BST splits nodes roughly in half at each level → O(log n) height.'},
+{id:11,s:'DSA',q:'Which data structure is used internally when implementing recursion?',o:['Queue','Heap','Stack','Array'],a:2,e:'Each recursive call pushes a new stack frame; the call stack is a Stack.'},
+{id:12,s:'DSA',q:'What is the time complexity of the Floyd-Warshall all-pairs shortest path algorithm?',o:['O(n²)','O(n log n)','O(n³)','O(n² log n)'],a:2,e:'Floyd-Warshall uses three nested loops over n vertices → O(n³).'},
+{id:13,s:'DSA',q:'The number of edges in a complete undirected graph with n vertices is:',o:['n²','n(n+1)/2','n(n−1)/2','2n'],a:2,e:'Every pair of distinct vertices has exactly one edge: C(n,2) = n(n−1)/2.'},
+{id:14,s:'DSA',q:'What is the average-case time complexity of a lookup in a hash table?',o:['O(n)','O(log n)','O(1)','O(n log n)'],a:2,e:'With a good hash function and low load factor, hash table lookup is O(1) average.'},
+{id:15,s:'DSA',q:'Which algorithm is used to detect a cycle in a directed graph?',o:['BFS','Kruskal\'s algorithm','DFS with vertex coloring','Dijkstra\'s algorithm'],a:2,e:'DFS with 3-color marking (white/gray/black) detects back edges which indicate cycles.'},
+{id:16,s:'DSA',q:'What is the worst-case time complexity of Heap Sort?',o:['O(n²)','O(n log n)','O(n)','O(log n)'],a:1,e:'Heap Sort always builds the heap in O(n) then extracts n times at O(log n) each → O(n log n) in all cases.'},
+{id:17,s:'DSA',q:'Which data structure is most suitable for implementing a priority queue?',o:['Array','Stack','Heap','Linked List'],a:2,e:'A binary heap gives O(log n) insert and O(log n) extract-min/max, ideal for a priority queue.'},
+{id:18,s:'DSA',q:'The recurrence relation for Merge Sort is:',o:['T(n)=T(n−1)+O(1)','T(n)=2T(n/2)+O(n)','T(n)=T(n/2)+O(1)','T(n)=2T(n−1)+O(1)'],a:1,e:'Merge Sort divides into 2 halves (2T(n/2)) and merges in O(n) → T(n)=2T(n/2)+O(n), solving to O(n log n).'},
+{id:19,s:'DSA',q:'In an AVL tree, the balance factor of any node must be:',o:['−2, −1, 0, 1, 2','{−1, 0, 1} only','Any non-negative integer','0 only'],a:1,e:'AVL invariant: |height(left)−height(right)| ≤ 1, so balance factor ∈ {−1, 0, 1}.'},
+{id:20,s:'DSA',q:'Time complexity of DFS on a graph with V vertices and E edges is:',o:['O(V)','O(E)','O(V+E)','O(V×E)'],a:2,e:'DFS visits every vertex once and examines every edge once → O(V+E).'},
+{id:21,s:'DSA',q:'A circular queue of size n can hold a maximum of how many elements?',o:['n','n−1','n+1','n/2'],a:1,e:'One slot is kept empty to distinguish full from empty states → max n−1 elements.'},
+{id:22,s:'DSA',q:'Kruskal\'s algorithm is used to find:',o:['Shortest path between two nodes','Minimum Spanning Tree','Maximum flow','Topological sort'],a:1,e:'Kruskal\'s greedily adds the smallest edge not forming a cycle → Minimum Spanning Tree.'},
+{id:23,s:'DSA',q:'What is the amortized time complexity of a push operation on a dynamic array (e.g., ArrayList)?',o:['O(n)','O(log n)','O(1)','O(n²)'],a:2,e:'Although occasional resizing costs O(n), amortized over all pushes the cost is O(1) per operation.'},
+{id:24,s:'DSA',q:'Which of the following searching algorithms requires the input to be sorted?',o:['Linear Search only','Binary Search only','Both Binary and Jump Search','Interpolation Search only'],a:2,e:'Both Binary Search and Jump Search require sorted input to work correctly.'},
+{id:25,s:'DSA',q:'Separate chaining in hash tables resolves collision by:',o:['Moving to the next slot','Storing all colliding elements in a linked list at each bucket','Using a second hash function','Rehashing the table'],a:1,e:'Separate chaining keeps a linked list (or other structure) at each bucket to handle multiple keys mapping to the same slot.'},
+{id:26,s:'DSA',q:'What does Dijkstra\'s algorithm use at its core?',o:['DFS','BFS','Greedy selection with priority queue','Dynamic programming table'],a:2,e:'Dijkstra greedily always extends the unvisited node with the current shortest distance using a min-heap.'},
+{id:27,s:'DSA',q:'In a linked list, the time complexity of insertion/deletion at the head is:',o:['O(n)','O(log n)','O(1)','O(n log n)'],a:2,e:'With a head pointer, inserting or deleting the first node requires no traversal → O(1).'},
+{id:28,s:'DSA',q:'Which of the following is NOT a self-balancing binary search tree?',o:['AVL Tree','Red-Black Tree','B-Tree','Plain Binary Search Tree'],a:3,e:'A plain BST has no balancing mechanism; in the worst case (sorted input) it degrades to a linked list O(n) height.'},
+{id:29,s:'DSA',q:'The Bellman-Ford algorithm can correctly handle graphs that contain:',o:['Negative-weight cycles','Negative-weight edges (but no negative cycles)','Only positive weights','Only undirected edges'],a:1,e:'Bellman-Ford handles negative-weight edges and can also detect (but not solve) negative-weight cycles.'},
+{id:30,s:'DSA',q:'Maximum number of nodes at level l of a binary tree (root at level 0) is:',o:['l','l²','2l','2^l'],a:3,e:'At each level the maximum nodes doubles: level 0→1, level 1→2, level l→2^l.'},
+{id:31,s:'DSA',q:'Which sorting algorithm is in-place but NOT stable?',o:['Merge Sort','Insertion Sort','Heap Sort','Bubble Sort'],a:2,e:'Heap Sort is in-place (O(1) extra space) but not stable because the heap operations swap non-adjacent elements.'},
+{id:32,s:'DSA',q:'A deque (double-ended queue) supports:',o:['Insertion at front only','Insertion at rear only','Insertion and deletion at both ends','Random access like an array'],a:2,e:'Deque = Double-Ended Queue; it supports push/pop at both front and back.'},
+{id:33,s:'DSA',q:'DFS (Depth-First Search) internally uses which data structure?',o:['Queue','Heap','Stack (or call stack via recursion)','Hash Map'],a:2,e:'DFS uses a stack to track the path to explore; recursion uses the call stack implicitly.'},
+{id:34,s:'DSA',q:'What is the time complexity of building a binary heap from an unsorted array of n elements?',o:['O(n log n)','O(n)','O(log n)','O(n²)'],a:1,e:'The heapify-down process on all non-leaf nodes can be shown to run in O(n) using a tighter mathematical analysis.'},
+{id:35,s:'DSA',q:'Which of the following is a non-comparison-based sorting algorithm?',o:['QuickSort','MergeSort','Counting Sort','HeapSort'],a:2,e:'Counting Sort sorts by counting element frequencies — it never compares two elements, achieving O(n+k).'},
+
+// ─── OS (36–65) ───────────────────────────────────────────────────────────
+{id:36,s:'OS',q:'Which CPU scheduling algorithm can lead to starvation of low-priority processes?',o:['FCFS','Round Robin','Priority Scheduling','Shortest Job First (non-preemptive)'],a:2,e:'Priority Scheduling always runs the highest-priority process; low-priority processes may wait indefinitely (starve) if high-priority jobs keep arriving. SJF can also cause it.'},
+{id:37,s:'OS',q:'What is the main advantage of Round Robin scheduling?',o:['Minimizes average waiting time','Maximizes CPU throughput','Ensures fairness and prevents starvation','Handles I/O-bound processes best'],a:2,e:'Round Robin gives each process a time quantum in turn, ensuring no process waits forever → fairness and starvation-free.'},
+{id:38,s:'OS',q:'Which of the four Coffman conditions is NOT required for deadlock?',o:['Mutual Exclusion','Hold and Wait','Preemption (allowed)','Circular Wait'],a:2,e:'The four necessary conditions are Mutual Exclusion, Hold-and-Wait, No Preemption, and Circular Wait. Preemption being ALLOWED breaks the deadlock condition "No Preemption."'},
+{id:39,s:'OS',q:'The Banker\'s Algorithm is used for:',o:['Deadlock detection after it occurs','Deadlock avoidance by checking safe state','Memory allocation using paging','CPU burst estimation'],a:1,e:'The Banker\'s Algorithm checks whether granting a resource request keeps the system in a safe state, thus avoiding deadlock.'},
+{id:40,s:'OS',q:'Thrashing occurs when:',o:['A process uses too much CPU','The OS spends more time paging than executing processes','Too many threads are created','Context switching takes too long'],a:1,e:'Thrashing: high page-fault rate causes the CPU to spend most time servicing page faults instead of doing useful work.'},
+{id:41,s:'OS',q:'Which page replacement algorithm is known to suffer from Belady\'s Anomaly?',o:['LRU','Optimal (OPT)','FIFO','LFU'],a:2,e:'FIFO can have MORE page faults when given more frames — this counter-intuitive behavior is Belady\'s Anomaly.'},
+{id:42,s:'OS',q:'The Optimal (OPT) page replacement algorithm replaces the page:',o:['Least recently used','Least frequently used','Not used for the longest time in the future','First brought into memory'],a:2,e:'OPT replaces the page that will not be needed for the longest time ahead — it\'s theoretical as future references aren\'t known.'},
+{id:43,s:'OS',q:'A semaphore initialized to 1 is best described as a:',o:['Counting semaphore','Mutex (binary semaphore)','Strong semaphore','Weak semaphore'],a:1,e:'A binary semaphore (value 0 or 1) initialized to 1 acts as a mutex — only one process enters the critical section at a time.'},
+{id:44,s:'OS',q:'Which of the following is TRUE about processes vs threads?',o:['Threads have separate memory spaces; processes share','Processes share memory; threads have separate spaces','Threads within a process share code, data, and heap; stacks are separate','Threads are slower to create than processes in modern OSes'],a:2,e:'Threads in the same process share the code segment, data segment, and heap, but each thread has its own stack.'},
+{id:45,s:'OS',q:'What does a context switch do?',o:['Switches between user mode and kernel mode','Saves the state of the current process and restores the state of another','Swaps the process to disk to free memory','Changes the scheduling algorithm at runtime'],a:1,e:'During a context switch, the OS saves the CPU registers, PC, and stack pointer of the current process into its PCB, then loads them from the next process\'s PCB.'},
+{id:46,s:'OS',q:'The Translation Lookaside Buffer (TLB) is used to:',o:['Store the full page table in fast memory','Cache recently used page-table entries to speed virtual address translation','Handle page faults','Manage disk-based virtual memory'],a:1,e:'TLB is a small, fast cache of recent virtual-to-physical page-number translations, reducing expensive page-table lookups.'},
+{id:47,s:'OS',q:'In Unix/Linux, which system call creates a new process?',o:['exec()','spawn()','fork()','create()'],a:2,e:'fork() creates a child process that is an exact copy of the parent. exec() replaces the process image with a new program.'},
+{id:48,s:'OS',q:'Which of the following CPU scheduling algorithms is non-preemptive?',o:['Round Robin','Shortest Remaining Time First (SRTF)','First Come First Serve (FCFS)','Preemptive Priority'],a:2,e:'FCFS runs each process to completion (or until it blocks for I/O) without interruption — it is non-preemptive.'},
+{id:49,s:'OS',q:'Internal fragmentation occurs when:',o:['Free memory blocks are scattered between allocated blocks','Allocated memory block is larger than what the process needs','Memory compaction fails','A process requests more memory than available'],a:1,e:'Internal fragmentation = wasted space INSIDE an allocated block (the process got more than it asked for).'},
+{id:50,s:'OS',q:'What happens when a page fault occurs?',o:['The process is terminated immediately','The OS ignores the request','The OS loads the required page from secondary storage into a free frame','The CPU switches to another process permanently'],a:2,e:'On a page fault: OS suspends process, finds a free frame (evicting a page if necessary), loads the required page from disk, updates the page table, and resumes the process.'},
+{id:51,s:'OS',q:'The three requirements for a correct solution to the critical section problem are:',o:['Safety, Liveness, Fairness','Mutual Exclusion, Progress, Bounded Waiting','Starvation-free, Deadlock-free, Speed','Lock, Unlock, Reset'],a:1,e:'Mutual Exclusion: only one process in CS at a time. Progress: if no one is in CS, a process wishing to enter will eventually. Bounded Waiting: there is a bound on how long a process waits.'},
+{id:52,s:'OS',q:'Spooling (Simultaneous Peripheral Operations On-Line) is primarily associated with:',o:['CPU scheduling','Virtual memory management','I/O management (e.g., print queuing)','File system journaling'],a:2,e:'Spooling queues I/O jobs (especially for slow devices like printers) in a buffer, decoupling fast CPU from slow devices.'},
+{id:53,s:'OS',q:'A "zombie process" in Unix is one that:',o:['Is consuming abnormally high CPU','Has finished execution but its exit status has not yet been read by its parent','Is waiting indefinitely for I/O','Is a process running in kernel mode only'],a:1,e:'After a child calls exit(), it becomes a zombie: its PCB stays in the process table until the parent calls wait() to collect the exit status.'},
+{id:54,s:'OS',q:'Paging in memory management eliminates which type of fragmentation?',o:['Internal fragmentation','External fragmentation','Both internal and external','Neither'],a:1,e:'Paging eliminates external fragmentation because any free frame can be assigned to a process. Internal fragmentation may still occur in the last page.'},
+{id:55,s:'OS',q:'The P (wait) operation on a semaphore s does which of the following?',o:['Increments s; if s<0 the process continues','Decrements s; if s<0 the process blocks','Sets s to 0 always','Doubles s'],a:1,e:'P(s): s = s−1; if s<0, the calling process is added to the waiting queue and blocked.'},
+{id:56,s:'OS',q:'Which of the following is an example of a preemptive scheduling algorithm?',o:['FCFS','Non-preemptive SJF','Round Robin','All of the above'],a:2,e:'Round Robin is preemptive — a running process is forcibly moved out when its time quantum expires.'},
+{id:57,s:'OS',q:'Virtual memory allows:',o:['Processes to run only in RAM','Programs to use more address space than physical RAM available','Faster disk access','Sharing of physical pages is impossible'],a:1,e:'Virtual memory uses disk as an extension of RAM, letting processes use a large virtual address space regardless of physical RAM size.'},
+{id:58,s:'OS',q:'Degree of multiprogramming refers to:',o:['Number of CPUs in the system','Number of processes currently loaded in main memory','Number of threads per process','Number of I/O devices connected'],a:1,e:'Higher degree = more processes in memory = better CPU utilization (up to the thrashing threshold).'},
+{id:59,s:'OS',q:'Which of the following Inter-Process Communication (IPC) mechanisms allows two processes to share a memory region directly?',o:['Pipe','Message Queue','Shared Memory','Socket'],a:2,e:'Shared memory is the fastest IPC mechanism — both processes map the same physical pages into their address spaces.'},
+{id:60,s:'OS',q:'In the context of OS, what is a "race condition"?',o:['A scheduling algorithm for time-critical processes','A situation where outcome depends on non-deterministic ordering of concurrent operations','When two CPUs run at different speeds','A deadlock between exactly two processes'],a:1,e:'A race condition arises when multiple processes/threads access and modify shared data concurrently, and the result depends on execution order.'},
+{id:61,s:'OS',q:'Segmentation gives each process:',o:['Fixed-size memory partitions','Variable-size logical segments matching program structure (code, stack, heap)','Pages of equal size','Contiguous physical memory only'],a:1,e:'Segmentation divides a process\'s address space into logical units (segments) of varying sizes like code, data, and stack segments.'},
+{id:62,s:'OS',q:'Which scheduling algorithm minimizes average waiting time for a given set of processes (assuming known burst times)?',o:['FCFS','Round Robin','SJF (non-preemptive)','Priority Scheduling'],a:2,e:'SJF is provably optimal for minimizing average waiting time when all jobs are available simultaneously.'},
+{id:63,s:'OS',q:'A process control block (PCB) stores which of the following?',o:['Only CPU registers','Process state, CPU registers, memory management info, I/O status, and scheduling info','Only the process\'s open file list','Kernel code only'],a:1,e:'PCB is the OS data structure representing a process — it contains everything needed to resume execution and manage the process.'},
+{id:64,s:'OS',q:'Copy-on-Write (COW) is a technique used during fork() to:',o:['Immediately copy all parent\'s pages to child','Share pages between parent and child until one writes, then copy only the modified page','Speed up context switching','Avoid virtual memory usage'],a:1,e:'COW avoids expensive immediate copying — parent and child share the same physical pages until either modifies one, at which point only that page is copied.'},
+{id:65,s:'OS',q:'Which of the following is a necessary condition for a deadlock (Coffman condition) that can be broken by preemption?',o:['Mutual Exclusion','Hold and Wait','No Preemption','Circular Wait'],a:2,e:'Allowing preemption (forcibly taking resources away from a process) breaks the "No Preemption" Coffman condition, preventing deadlock.'},
+
+// ─── DBMS (66–95) ─────────────────────────────────────────────────────────
+{id:66,s:'DBMS',q:'Which of the following is NOT one of the ACID properties of a database transaction?',o:['Atomicity','Consistency','Isolation','Durability', 'Dependency'],a:4,e:'ACID = Atomicity, Consistency, Isolation, Durability. "Dependency" is not an ACID property.'},
+{id:66,s:'DBMS',q:'Which of the following is NOT one of the ACID properties?',o:['Atomicity','Consistency','Dependency','Durability'],a:2,e:'ACID = Atomicity, Consistency, Isolation, Durability. "Dependency" is not an ACID property.'},
+{id:67,s:'DBMS',q:'A primary key in a relational table:',o:['Can contain NULL values','Must be unique and NOT NULL','Can be duplicated across rows','Is always a single column'],a:1,e:'Primary key uniquely identifies each row — it must be unique and cannot contain NULL.'},
+{id:68,s:'DBMS',q:'A foreign key in a table:',o:['Must be unique in the referencing table','References a primary key (or unique key) in another table to enforce referential integrity','Cannot be NULL','Must match the data type of the referenced key only if numeric'],a:1,e:'A foreign key is a column whose values match the primary key of another table, enforcing referential integrity.'},
+{id:69,s:'DBMS',q:'A relation is in First Normal Form (1NF) if:',o:['It has no partial dependencies','All attributes are atomic (no multi-valued or composite attributes)','It has no transitive dependencies','It has a BCNF violation'],a:1,e:'1NF requires every attribute to hold only atomic (indivisible) values — no repeating groups or nested sets.'},
+{id:70,s:'DBMS',q:'A relation is in Second Normal Form (2NF) if it is in 1NF and:',o:['Has no transitive dependencies','Every non-key attribute is fully functionally dependent on the entire primary key (no partial dependencies)','Every attribute determines all others','Has no multivalued dependencies'],a:1,e:'2NF eliminates partial dependencies — non-key attributes must depend on the WHOLE composite primary key, not just part of it.'},
+{id:71,s:'DBMS',q:'Third Normal Form (3NF) eliminates:',o:['Partial dependencies','Multi-valued dependencies','Transitive dependencies (non-key attribute depends on another non-key attribute)','Join dependencies'],a:2,e:'3NF: every non-prime attribute must depend directly on the primary key, not transitively through another non-prime attribute.'},
+{id:72,s:'DBMS',q:'Boyce-Codd Normal Form (BCNF) is stricter than 3NF because:',o:['It also removes multi-valued dependencies','For every functional dependency X→Y, X must be a superkey (not just any candidate key)','It removes all join dependencies','It requires all attributes to be atomic'],a:1,e:'BCNF requires that for every non-trivial FD X→Y, X must be a superkey. 3NF allows some FDs from candidate keys that are not superkeys.'},
+{id:73,s:'DBMS',q:'What does an INNER JOIN return?',o:['All rows from the left table, with NULLs for unmatched right rows','All rows from both tables','Only the rows where the join condition is satisfied in both tables','A Cartesian product of both tables'],a:2,e:'INNER JOIN returns only matching rows from both tables — rows without a match in either table are excluded.'},
+{id:74,s:'DBMS',q:'A LEFT OUTER JOIN returns:',o:['Only matching rows','All rows from the right table, NULL-padded for unmatched left','All rows from the left table, with NULLs for unmatched right rows','All rows from both tables regardless of match'],a:2,e:'LEFT JOIN keeps all rows from the left table; if no match in right table, the right-side columns are NULL.'},
+{id:75,s:'DBMS',q:'Which SQL clause is used to filter groups after GROUP BY?',o:['WHERE','FILTER','HAVING','QUALIFY'],a:2,e:'WHERE filters rows before grouping; HAVING filters groups after GROUP BY aggregation.'},
+{id:76,s:'DBMS',q:'What does the SQL DISTINCT keyword do?',o:['Sorts result in descending order','Removes duplicate rows from the result set','Selects only NULL values','Limits the result to one row'],a:1,e:'SELECT DISTINCT eliminates duplicate rows in the output, returning only unique combinations of the selected columns.'},
+{id:77,s:'DBMS',q:'An index in a database primarily improves:',o:['Insert speed','Storage efficiency','Query/read performance by avoiding full table scans','Update speed'],a:2,e:'Indexes allow the DB engine to find rows without scanning the whole table → faster SELECTs. They slow down writes (index must be updated on every DML).'},
+{id:78,s:'DBMS',q:'Which transaction isolation level prevents "dirty reads" but allows "non-repeatable reads"?',o:['Read Uncommitted','Read Committed','Repeatable Read','Serializable'],a:1,e:'READ COMMITTED prevents dirty reads (you only see committed data) but another transaction can commit changes between your reads → non-repeatable reads are possible.'},
+{id:79,s:'DBMS',q:'In a B+ tree (used in most DB indexes), data records are stored:',o:['In both internal and leaf nodes','Only in internal nodes','Only in leaf nodes, which are linked','In the root node only'],a:2,e:'B+ tree: internal nodes store only keys for routing; actual data pointers reside in leaf nodes which form a linked list for range scans.'},
+{id:80,s:'DBMS',q:'Which relational algebra operation retrieves a subset of columns from a relation?',o:['Selection (σ)','Projection (π)','Join (⋈)','Union (∪)'],a:1,e:'Projection (π) selects specific columns (vertical slice); Selection (σ) filters rows based on a predicate (horizontal slice).'},
+{id:81,s:'DBMS',q:'The SQL statement "SELECT name FROM Employee WHERE dept = \'IT\'" uses which relational algebra operations?',o:['Only Projection','Only Selection','Selection followed by Projection','Projection followed by Selection'],a:2,e:'First Selection (WHERE dept=\'IT\') filters rows, then Projection (SELECT name) picks the column.'},
+{id:82,s:'DBMS',q:'What is a "view" in SQL?',o:['A physical copy of a table stored on disk','A virtual table defined by a SELECT query, not stored as data','An index on multiple columns','A synonym for a stored procedure'],a:1,e:'A view is a named query stored in the DB catalog. It behaves like a table but computes its result dynamically from the underlying tables.'},
+{id:83,s:'DBMS',q:'UNION vs UNION ALL in SQL — what is the key difference?',o:['UNION allows duplicates; UNION ALL removes them','UNION ALL allows duplicates; UNION removes them','Both remove duplicates','Both allow duplicates'],a:1,e:'UNION removes duplicate rows (expensive dedup step); UNION ALL keeps all rows including duplicates and is faster.'},
+{id:84,s:'DBMS',q:'A "superkey" in a relation is:',o:['A key with only one attribute','Any set of attributes that uniquely identifies a tuple (may have extra attributes)','A key that references another relation','The same as a candidate key'],a:1,e:'A superkey is any set of attributes that uniquely identifies a row. A candidate key is a minimal superkey (no proper subset is also a superkey).'},
+{id:85,s:'DBMS',q:'Which SQL command is used to remove a table and all its data permanently?',o:['DELETE','TRUNCATE','DROP','REMOVE'],a:2,e:'DROP TABLE removes the table definition AND all its data. TRUNCATE removes data but keeps the structure. DELETE removes rows but can be rolled back.'},
+{id:86,s:'DBMS',q:'What is a trigger in a database?',o:['A manual stored procedure call','An automatic procedure that fires in response to INSERT, UPDATE, or DELETE on a table','A special type of index','An integrity constraint'],a:1,e:'A trigger is a DB object that automatically executes a specified action (PL/SQL or T-SQL block) when a specified DML event occurs on a table.'},
+{id:87,s:'DBMS',q:'Which of the following SQL aggregate functions ignores NULL values?',o:['COUNT(*)','SUM(col)','Both COUNT(*) and SUM','None — all aggregates include NULLs'],a:1,e:'SUM, AVG, MIN, MAX, COUNT(column) all ignore NULLs. COUNT(*) counts all rows including those with NULLs.'},
+{id:88,s:'DBMS',q:'In the Entity-Relationship (ER) model, a weak entity is one that:',o:['Has no attributes','Cannot exist without being associated with a strong (owner) entity','Has more than one primary key','Is represented by a diamond shape'],a:1,e:'A weak entity lacks a complete primary key on its own and depends on a strong entity for identification. It uses a discriminator + owner\'s PK.'},
+{id:89,s:'DBMS',q:'The "lost update" problem in databases occurs when:',o:['Two transactions read and write the same data item, with one transaction\'s update overwritten by the other','A transaction reads data that another has deleted','A transaction reads an uncommitted value','The database crashes during a write'],a:0,e:'Lost update: T1 reads X, T2 reads X, T1 writes X, T2 writes X → T1\'s update is lost. Prevented by proper locking or MVCC.'},
+{id:90,s:'DBMS',q:'Which of the following is TRUE about a stored procedure?',o:['It is compiled and stored on the client side','It is a precompiled set of SQL statements stored in the database that can accept parameters','It cannot be called from application code','It can only return a single value'],a:1,e:'Stored procedures are server-side precompiled SQL programs. They reduce network traffic, improve performance, and support parameters.'},
+{id:91,s:'DBMS',q:'Functional dependency X → Y means:',o:['Y determines X','For each value of X there is exactly one value of Y','X and Y have the same values','Y is optional when X is known'],a:1,e:'FD X→Y: for any two tuples with the same X value, they must have the same Y value. X functionally determines Y.'},
+{id:92,s:'DBMS',q:'The CAP theorem states that a distributed system can guarantee at most:',o:['Consistency + Availability + Partition Tolerance simultaneously','Two out of three: Consistency, Availability, Partition Tolerance','Only one of the three properties','Availability and Partition Tolerance always'],a:1,e:'CAP theorem (Brewer): a distributed data store can satisfy at most 2 of the 3 guarantees — Consistency, Availability, Partition Tolerance.'},
+{id:93,s:'DBMS',q:'What does the SQL ROLLBACK statement do?',o:['Commits the current transaction','Undoes all changes made by the current transaction','Saves a checkpoint in the transaction','Drops the database'],a:1,e:'ROLLBACK reverts all changes made within the current (uncommitted) transaction, restoring data to its state before the transaction began.'},
+{id:94,s:'DBMS',q:'Deadlock in a database context is best resolved by:',o:['Restarting the entire database','Aborting and restarting one of the deadlocked transactions','Waiting until deadlock resolves itself','Upgrading hardware'],a:1,e:'The DB detects the deadlock (via wait-for graph) and selects a victim transaction to abort and restart, breaking the cycle.'},
+{id:95,s:'DBMS',q:'A correlated subquery in SQL:',o:['Is always faster than a join','References a column from the outer query, making it re-evaluated for each outer row','Cannot reference outer query columns','Executes only once for the entire outer query'],a:1,e:'A correlated subquery is re-executed once for every row of the outer query because it references the outer query\'s column(s).'},
+
+// ─── CN (96–125) ──────────────────────────────────────────────────────────
+{id:96,s:'CN',q:'How many layers are in the OSI reference model?',o:['4','5','6','7'],a:3,e:'OSI has 7 layers: Physical, Data Link, Network, Transport, Session, Presentation, Application.'},
+{id:97,s:'CN',q:'What is the key difference between TCP and UDP?',o:['TCP is faster; UDP is reliable','TCP is connection-oriented and reliable; UDP is connectionless and unreliable','UDP is connection-oriented; TCP is connectionless','Both are identical except in speed'],a:1,e:'TCP provides connection setup (3-way handshake), reliable delivery, ordering, and flow control. UDP is lightweight, no guarantees.'},
+{id:98,s:'CN',q:'The TCP three-way handshake sequence is:',o:['SYN → ACK → SYN-ACK','SYN → SYN-ACK → ACK','ACK → SYN → SYN-ACK','SYN-ACK → SYN → ACK'],a:1,e:'Client sends SYN, server replies SYN-ACK, client replies ACK → connection established.'},
+{id:99,s:'CN',q:'Which layer of the OSI model is responsible for end-to-end delivery and flow control?',o:['Network layer','Data Link layer','Transport layer','Session layer'],a:2,e:'Transport layer (Layer 4) handles end-to-end communication, segmentation, flow control, and error recovery (TCP/UDP).'},
+{id:100,s:'CN',q:'What does DNS (Domain Name System) do?',o:['Assigns IP addresses dynamically','Translates domain names to IP addresses','Encrypts web traffic','Routes packets across the internet'],a:1,e:'DNS is the internet\'s phone book — it resolves human-readable domain names (e.g., google.com) to IP addresses.'},
+{id:101,s:'CN',q:'What is the default port number for HTTPS?',o:['80','21','443','8080'],a:2,e:'HTTP uses port 80; HTTPS (HTTP over TLS/SSL) uses port 443.'},
+{id:102,s:'CN',q:'MAC (Media Access Control) addresses operate at which OSI layer?',o:['Physical layer','Data Link layer','Network layer','Transport layer'],a:1,e:'MAC addresses are hardware identifiers used by the Data Link layer (Layer 2) for local network communication.'},
+{id:103,s:'CN',q:'ARP (Address Resolution Protocol) is used to:',o:['Resolve domain names to IP addresses','Map IP addresses to MAC addresses on a local network','Assign IP addresses to hosts','Route packets between networks'],a:1,e:'ARP broadcasts a request for the MAC address corresponding to a given IP address on the local network.'},
+{id:104,s:'CN',q:'What is the primary difference between a Hub and a Switch?',o:['A hub has more ports than a switch','A hub operates at Layer 3; a switch at Layer 2','A hub broadcasts frames to all ports; a switch forwards to the specific destination port only','They are functionally identical'],a:2,e:'Switch learns MAC addresses and forwards frames to the correct port only. Hub broadcasts to all ports — inefficient and insecure.'},
+{id:105,s:'CN',q:'Which IP address class has the range 192.0.0.0 to 223.255.255.255?',o:['Class A','Class B','Class C','Class D'],a:2,e:'Class C: 192.0.0.0 – 223.255.255.255. Default subnet mask /24. Supports ~254 hosts per network.'},
+{id:106,s:'CN',q:'Subnetting a network is primarily done to:',o:['Increase the total number of available IP addresses','Divide a network into smaller subnetworks to improve management and reduce broadcast domains','Speed up routing','Enable IPv6 compatibility'],a:1,e:'Subnetting partitions a large network into smaller subnets, reducing broadcast traffic and improving security and management.'},
+{id:107,s:'CN',q:'Which protocol is used to automatically assign IP addresses to hosts?',o:['DNS','ARP','DHCP','RARP'],a:2,e:'DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses, subnet masks, gateways, and DNS info to clients.'},
+{id:108,s:'CN',q:'In the sliding window protocol, the window size refers to:',o:['The size of the physical buffer','The number of unacknowledged frames that can be in transit at once','The maximum frame size in bytes','The timeout value before retransmission'],a:1,e:'The sliding window allows the sender to transmit up to window-size frames before needing an ACK, improving link utilization.'},
+{id:109,s:'CN',q:'CSMA/CD is used in:',o:['Wi-Fi networks (802.11)','Token Ring networks','Traditional Ethernet (802.3) wired LANs','Bluetooth networks'],a:2,e:'CSMA/CD (Collision Detection) is used in traditional Ethernet: stations detect collisions and use backoff to retry.'},
+{id:110,s:'CN',q:'Which layer of the OSI model handles routing and logical addressing?',o:['Data Link','Transport','Network','Session'],a:2,e:'Network layer (Layer 3) handles logical addressing (IP) and routing packets from source to destination across multiple networks.'},
+{id:111,s:'CN',q:'What is the purpose of NAT (Network Address Translation)?',o:['Encrypts all outgoing traffic','Allows multiple devices on a private network to share a single public IP address','Translates IPv4 to IPv6','Assigns MAC addresses'],a:1,e:'NAT maps private IP addresses (e.g., 192.168.x.x) to a public IP, allowing many devices to share one internet-routable address.'},
+{id:112,s:'CN',q:'Which routing protocol is a distance-vector protocol?',o:['OSPF','IS-IS','RIP','BGP (for intra-domain)'],a:2,e:'RIP (Routing Information Protocol) is a classic distance-vector protocol using hop count as metric. OSPF is link-state.'},
+{id:113,s:'CN',q:'HTTP is a _________ protocol.',o:['Connection-oriented and stateful','Connectionless and stateless','Connection-oriented and stateful only in HTTP/2','Always encrypted'],a:1,e:'HTTP is inherently stateless — each request is independent. Cookies and sessions are used to add state on top.'},
+{id:114,s:'CN',q:'Which transport protocol would you use for a live video stream where occasional loss is acceptable but low latency is critical?',o:['TCP','UDP','ICMP','FTP'],a:1,e:'UDP is preferred for real-time media: no connection overhead, no retransmission delay. A few lost packets are acceptable vs. the lag of retransmission.'},
+{id:115,s:'CN',q:'What is the maximum number of host addresses in a /24 subnet?',o:['254','255','256','128'],a:0,e:'/24 = 256 total addresses; subtract network address (.0) and broadcast (.255) → 254 usable host addresses.'},
+{id:116,s:'CN',q:'ICMP (Internet Control Message Protocol) is primarily used for:',o:['File transfer','Sending error messages and operational information (e.g., ping, traceroute)','Email delivery','Web page requests'],a:1,e:'ICMP is used for diagnostics and error reporting. ping uses ICMP Echo Request/Reply; traceroute uses ICMP TTL Exceeded messages.'},
+{id:117,s:'CN',q:'The "three-way handshake" in TCP uses which sequence of messages?',o:['SYN, ACK, FIN','SYN, SYN-ACK, ACK','ACK, SYN, ACK','FIN, FIN-ACK, ACK'],a:1,e:'TCP connection: Client→SYN, Server→SYN-ACK, Client→ACK. This synchronizes sequence numbers and establishes the connection.'},
+{id:118,s:'CN',q:'IPv6 addresses are how many bits long?',o:['32 bits','64 bits','128 bits','256 bits'],a:2,e:'IPv4 = 32 bits (~4 billion addresses). IPv6 = 128 bits (~3.4×10³⁸ addresses), written as 8 groups of 4 hex digits.'},
+{id:119,s:'CN',q:'Which of the following is a private IP address range?',o:['8.8.8.0/24','172.16.0.0/12','223.255.255.0/24','100.0.0.0/8'],a:1,e:'RFC 1918 private ranges: 10.0.0.0/8, 172.16.0.0–172.31.255.255 (/12), 192.168.0.0/16.'},
+{id:120,s:'CN',q:'What does TTL (Time To Live) in an IP packet do?',o:['Specifies packet encryption level','Limits packet lifetime by decrementing at each router hop; packet is discarded when TTL=0','Defines maximum packet size','Sets the priority of the packet'],a:1,e:'TTL prevents packets from circulating forever. Each router decrements TTL by 1; when it hits 0 the packet is dropped and an ICMP Time Exceeded is sent.'},
+{id:121,s:'CN',q:'Which layer of the TCP/IP model corresponds to OSI layers 5, 6, and 7?',o:['Network Access layer','Internet layer','Transport layer','Application layer'],a:3,e:'TCP/IP Application layer = OSI Session + Presentation + Application layers. Protocols: HTTP, DNS, SMTP, FTP, etc.'},
+{id:122,s:'CN',q:'Congestion control in TCP is primarily achieved through:',o:['Increasing window size whenever possible','Slow start + Congestion Avoidance + Fast Retransmit + Fast Recovery algorithms','Switching from TCP to UDP on congestion','Using ICMP messages to reduce sending rate'],a:1,e:'TCP congestion control: Slow Start (exponential growth), Congestion Avoidance (linear growth after ssthresh), Fast Retransmit on 3 duplicate ACKs, Fast Recovery.'},
+{id:123,s:'CN',q:'The purpose of a firewall is to:',o:['Speed up network traffic','Monitor and control incoming and outgoing network traffic based on security rules','Assign IP addresses to hosts','Amplify Wi-Fi signals'],a:1,e:'A firewall filters network traffic by applying rules (allow/deny based on IP, port, protocol) to protect a network from unauthorized access.'},
+{id:124,s:'CN',q:'SMTP is used for:',o:['Receiving emails from a mail server','Sending emails between mail servers (and from client to server)','Browsing web pages','Transferring files over FTP'],a:1,e:'SMTP (Simple Mail Transfer Protocol, port 25/587) is used to send and relay email. POP3/IMAP are used to retrieve email.'},
+{id:125,s:'CN',q:'What is the difference between bandwidth and throughput?',o:['They are identical terms','Bandwidth is the theoretical maximum capacity of a link; throughput is the actual data rate achieved','Throughput is always greater than bandwidth','Bandwidth applies only to wireless; throughput to wired'],a:1,e:'Bandwidth = maximum possible data rate (capacity). Throughput = actual rate achieved, which is ≤ bandwidth due to overhead, congestion, errors.'},
+
+// ─── OOP (126–150) ────────────────────────────────────────────────────────
+{id:126,s:'OOP',q:'Encapsulation in OOP means:',o:['Inheriting properties from a parent class','Bundling data (attributes) and methods that operate on the data within a single unit, with controlled access','A class can have multiple forms','Hiding the class from the compiler'],a:1,e:'Encapsulation wraps data and methods together and restricts direct access to internal state, exposing it through public methods only.'},
+{id:127,s:'OOP',q:'Which OOP concept allows a child class to inherit properties and methods from a parent class?',o:['Encapsulation','Polymorphism','Inheritance','Abstraction'],a:2,e:'Inheritance lets a subclass reuse (and extend/override) the fields and methods of its superclass, enabling code reuse and hierarchical classification.'},
+{id:128,s:'OOP',q:'Method overloading is resolved at:',o:['Runtime','Compile time','Link time','Both compile time and runtime'],a:1,e:'Method overloading (same name, different signatures) is resolved at compile time based on argument types → static/compile-time polymorphism.'},
+{id:129,s:'OOP',q:'Method overriding is resolved at:',o:['Compile time','Link time','Runtime (dynamic dispatch)','Load time'],a:2,e:'Overriding (subclass redefines parent\'s method with same signature) is resolved at runtime through the virtual method table → dynamic/runtime polymorphism.'},
+{id:130,s:'OOP',q:'An abstract class in Java/C++:',o:['Can be instantiated directly','Cannot be instantiated and may contain abstract (unimplemented) methods','Must have only abstract methods','Is the same as an interface'],a:1,e:'Abstract class: cannot be instantiated; may have both concrete and abstract methods. A subclass must implement all abstract methods or also be abstract.'},
+{id:131,s:'OOP',q:'An interface in Java (prior to Java 8):',o:['Can have method implementations','Can have instance variables','Contains only abstract method declarations and constants','Supports multiple levels of inheritance'],a:2,e:'Pre-Java 8 interfaces: purely abstract — only method signatures and public static final constants. From Java 8+, default and static methods are allowed.'},
+{id:132,s:'OOP',q:'What is a constructor?',o:['A method that destroys an object','A special method automatically called when an object is created, used to initialize it','A static method in a class','A method that can only be called once'],a:1,e:'Constructor: same name as class, no return type, called automatically on object creation to set initial state.'},
+{id:133,s:'OOP',q:'Which of the following best describes polymorphism?',o:['A class can only have one method name','Objects of different classes can be treated as objects of a common supertype, and the correct method is called based on the actual object\'s type','A class inherits from multiple parents','Data is hidden inside objects'],a:1,e:'Polymorphism ("many forms"): a single interface/method can behave differently based on the actual object type — enables flexible and extensible code.'},
+{id:134,s:'OOP',q:'The "Single Responsibility Principle" (SOLID-S) states that:',o:['A class should be open for extension but closed for modification','A class should have only one reason to change (one responsibility)','Functions should depend on abstractions','Subclasses must be substitutable for their base classes'],a:1,e:'SRP: every class/module should have only one job. If a class handles both business logic and database operations, changes to DB schema force unnecessary changes to business logic.'},
+{id:135,s:'OOP',q:'The Liskov Substitution Principle (SOLID-L) states:',o:['Large interfaces should be split into smaller ones','Subclasses must be substitutable for their base classes without altering program correctness','Depend on abstractions, not concretions','Classes should be open for extension, closed for modification'],a:1,e:'LSP: anywhere a base class object is expected, a derived class object must work correctly — subtype behavior must be consistent with the base type contract.'},
+{id:136,s:'OOP',q:'Which design pattern ensures that a class has only one instance and provides a global access point?',o:['Factory','Observer','Singleton','Decorator'],a:2,e:'Singleton pattern: private constructor + static instance + static getInstance() method. Used for logging, config managers, thread pools.'},
+{id:137,s:'OOP',q:'The Factory design pattern is used to:',o:['Ensure only one instance of a class','Create objects without specifying the exact class of the object to be created','Add behavior to objects dynamically','Define a family of algorithms'],a:1,e:'Factory pattern: a factory method/class creates objects based on parameters, decoupling object creation from the client code.'},
+{id:138,s:'OOP',q:'The Observer design pattern implements:',o:['One-to-one relationship between objects','A one-to-many dependency where when one object (subject) changes state, all its dependents (observers) are notified','Object creation delegation','Interface-based communication only'],a:1,e:'Observer: subject maintains a list of observers; when state changes, it notifies all observers. Used in event systems, MVC, pub-sub.'},
+{id:139,s:'OOP',q:'"Composition over Inheritance" is a design principle suggesting:',o:['Always use abstract classes instead of interfaces','Prefer assembling objects with desired behaviors rather than inheriting from parent classes','Never use inheritance','Use static methods everywhere'],a:1,e:'Composition provides flexibility: you can change behavior at runtime by swapping composed objects. Inheritance creates tight coupling and fragile base class problems.'},
+{id:140,s:'OOP',q:'The "this" keyword in Java/C++ refers to:',o:['The parent class object','The current instance of the class','The class itself (like a static reference)','The previous object created'],a:1,e:'"this" is a reference to the current object — used to distinguish instance variables from parameters, and to call other constructors.'},
+{id:141,s:'OOP',q:'In Java, the "final" keyword applied to a method means:',o:['The method must be overridden in subclasses','The method cannot be overridden in any subclass','The method is abstract','The method is static'],a:1,e:'final method: prevents overriding in subclasses. final class: prevents inheritance. final variable: makes it a constant (assigned once).'},
+{id:142,s:'OOP',q:'What is the difference between aggregation and composition in OOP?',o:['They are identical','In composition, the child cannot exist without the parent; in aggregation, the child can exist independently','In aggregation, child cannot exist without parent; in composition, it can','Composition is a weaker relationship than aggregation'],a:1,e:'Composition ("has-a" with ownership): child\'s lifetime tied to parent. Aggregation ("has-a" without ownership): child can exist independently (e.g., University has Students; students exist without university).'},
+{id:143,s:'OOP',q:'High cohesion in software design means:',o:['A module has many dependencies on other modules','A module\'s responsibilities are focused and closely related — it does one thing well','Classes are tightly coupled','The class has many public methods'],a:1,e:'High cohesion = a class/module has a single, well-defined purpose. High cohesion + low coupling = maintainable, testable design.'},
+{id:144,s:'OOP',q:'The Dependency Inversion Principle (SOLID-D) states:',o:['High-level modules should depend on low-level modules directly','Both high-level and low-level modules should depend on abstractions (interfaces), not concretions','Subclasses should be substitutable for base classes','A class should have one responsibility'],a:1,e:'DIP: depend on interfaces/abstractions, not implementations. High-level policy should not be coupled to low-level details — both depend on the same abstraction.'},
+{id:145,s:'OOP',q:'In C++, a virtual function is used to achieve:',o:['Compile-time polymorphism','Runtime polymorphism via dynamic dispatch through the vtable','Static binding','Memory management'],a:1,e:'A virtual function in a base class is overridden in derived classes. The correct version is selected at runtime through the virtual function table (vtable).'},
+{id:146,s:'OOP',q:'Multiple inheritance in Java is achieved through:',o:['Extending multiple classes with "extends"','Implementing multiple interfaces with "implements"','Using abstract classes only','Not supported in Java at all'],a:1,e:'Java does not allow multiple class inheritance (to avoid the diamond problem) but a class can implement multiple interfaces.'},
+{id:147,s:'OOP',q:'The "super" keyword in Java is used to:',o:['Create a new instance of the parent class','Reference the parent class constructor or methods from within the child class','Prevent method overriding','Access static members of the parent'],a:1,e:'"super()" calls the parent constructor; "super.method()" calls the parent\'s version of an overridden method.'},
+{id:148,s:'OOP',q:'What is abstraction in OOP?',o:['Hiding the implementation details and exposing only the essential interface to the user','Making all methods private','A class with no methods','Copying objects'],a:0,e:'Abstraction hides complexity — the user sees WHAT an object does, not HOW it does it. Achieved via abstract classes and interfaces.'},
+{id:149,s:'OOP',q:'A static method in a class:',o:['Can access instance variables directly','Belongs to the class, not to any specific instance, and can be called without an object','Is only callable from subclasses','Is always private'],a:1,e:'Static methods belong to the class itself. They cannot access instance variables (no "this"), but can be called as ClassName.method().'},
+{id:150,s:'OOP',q:'The Open/Closed Principle (SOLID-O) states that software entities should be:',o:['Opened for modification and closed for extension','Open for extension and closed for modification','Always fully open for both','Closed for both extension and modification'],a:1,e:'OCP: you should be able to add new behavior by writing new code (extension), not by changing existing tested code (modification). Achieved via interfaces and polymorphism.'},
+
+// ─── COA (151–175) ────────────────────────────────────────────────────────
+{id:151,s:'COA',q:'The Von Neumann architecture is characterized by:',o:['Separate instruction and data memories (Harvard architecture)','A single shared memory bus for both instructions and data','Parallel processing units','No program counter'],a:1,e:'Von Neumann bottleneck: CPU, memory, and I/O share one bus; instructions and data stored in same memory space.'},
+{id:152,s:'COA',q:'RISC (Reduced Instruction Set Computer) architecture differs from CISC mainly in that:',o:['RISC has more complex instructions than CISC','RISC uses simple, fixed-length instructions executable in one clock cycle; CISC uses complex variable-length instructions','RISC has no pipelining','RISC uses microprogramming extensively'],a:1,e:'RISC: few simple instructions, load-store architecture, fixed width, compiler does the work. CISC: many complex instructions, variable widths, hardware does more (microprogramming).'},
+{id:153,s:'COA',q:'In a 5-stage pipeline (IF, ID, EX, MEM, WB), how many instructions can be in progress simultaneously at peak throughput?',o:['1','3','5','10'],a:2,e:'A 5-stage pipeline can overlap 5 instructions at once — one in each stage simultaneously at peak.'},
+{id:154,s:'COA',q:'Cache memory is placed between the CPU and main memory to:',o:['Increase total storage capacity','Reduce the average memory access time by storing frequently accessed data closer to the CPU','Provide persistent storage','Enable virtual memory'],a:1,e:'Cache exploits locality of reference — recently/frequently used data is kept in fast SRAM cache, reducing expensive DRAM accesses.'},
+{id:155,s:'COA',q:'A cache miss occurs when:',o:['The CPU finds the required data in the cache','The required data is not found in the cache and must be fetched from main memory','The cache is full','The data in cache is stale'],a:1,e:'Cache miss: required data absent from cache → CPU stalls while fetching from slower main memory. Hit rate = hits/(hits+misses).'},
+{id:156,s:'COA',q:'In direct-mapped cache, each memory block can be placed in:',o:['Any cache line','One specific cache line (determined by block address mod number of cache lines)','Any line in a specific set','Every cache line simultaneously'],a:1,e:'Direct-mapped: each block maps to exactly one cache line. Simple but high conflict miss rate if two frequently used blocks map to the same line.'},
+{id:157,s:'COA',q:'Which addressing mode uses the instruction\'s operand field directly as the data value (no memory access)?',o:['Direct addressing','Indirect addressing','Immediate addressing','Register addressing'],a:2,e:'Immediate mode: the operand in the instruction IS the data. e.g., MOV R1, #5 loads the value 5 into R1 — fastest, but limited value range.'},
+{id:158,s:'COA',q:'A data hazard in a pipeline occurs when:',o:['Two instructions access different memory locations','An instruction depends on the result of a previous instruction that has not yet completed in the pipeline','A branch instruction disrupts the pipeline','The instruction cache misses'],a:1,e:'Data hazard (RAW — Read After Write is most common): a later instruction needs a value being computed by an earlier instruction still in the pipeline.'},
+{id:159,s:'COA',q:'Which technique is used to resolve control hazards caused by branch instructions in a pipeline?',o:['Forwarding/bypassing','Data hazard stalling','Branch prediction','Register renaming'],a:2,e:'Branch prediction (static or dynamic) guesses the branch outcome to keep the pipeline full. On misprediction, the pipeline is flushed (branch penalty).'},
+{id:160,s:'COA',q:'The two\'s complement representation of −5 in 8-bit binary is:',o:['10000101','11111011','11111010','00000101'],a:1,e:'+5 = 00000101. Invert bits: 11111010. Add 1: 11111011. So −5 in 8-bit two\'s complement = 11111011.'},
+{id:161,s:'COA',q:'DMA (Direct Memory Access) is used to:',o:['Allow the CPU to access cache directly','Allow I/O devices to transfer data to/from memory without CPU intervention','Manage virtual memory paging','Speed up floating-point arithmetic'],a:1,e:'DMA controller handles bulk data transfers between I/O and memory autonomously, freeing the CPU from byte-by-byte transfer management.'},
+{id:162,s:'COA',q:'The clock cycle time of a CPU running at 2 GHz is:',o:['2 nanoseconds','0.5 nanoseconds','5 nanoseconds','1 microsecond'],a:1,e:'Clock cycle time = 1 / frequency = 1 / 2×10⁹ = 0.5 ns.'},
+{id:163,s:'COA',q:'CPI (Cycles Per Instruction) is used to measure:',o:['Clock frequency of the CPU','Average number of clock cycles required to execute one instruction','Memory bandwidth','Cache hit rate'],a:1,e:'CPU time = Instruction count × CPI × Clock cycle time. Reducing CPI (through pipelining, out-of-order execution) improves performance.'},
+{id:164,s:'COA',q:'In IEEE 754 single-precision floating point, the number of bits allocated to the exponent is:',o:['1','8','23','32'],a:1,e:'IEEE 754 single-precision (32-bit): 1 sign bit, 8 exponent bits (biased-127), 23 mantissa bits.'},
+{id:165,s:'COA',q:'The purpose of an interrupt in computer organization is:',o:['To stop the CPU permanently','To signal the CPU that an event needs immediate attention, pausing current execution to run an ISR','To flush the cache','To reset all registers'],a:1,e:'Interrupt: hardware or software signal causing CPU to pause, save state, jump to Interrupt Service Routine (ISR), then resume.'},
+{id:166,s:'COA',q:'Set-associative cache is a compromise between:',o:['Direct-mapped and Fully Associative cache','L1 and L2 cache','Write-through and Write-back policies','SRAM and DRAM'],a:0,e:'N-way set-associative: memory divided into sets, each block maps to one set (like direct) but can occupy any of N lines in that set (like fully associative).'},
+{id:167,s:'COA',q:'Write-back cache policy means:',o:['Every write to cache immediately updates main memory','Modified cache blocks are written to main memory only when they are evicted','Every read checks both cache and main memory','The cache and memory are always synchronized'],a:1,e:'Write-back: dirty bit marks modified cache lines; main memory updated only on eviction. Faster writes, but cache and memory may temporarily differ.'},
+{id:168,s:'COA',q:'Booth\'s algorithm is used for:',o:['Floating-point addition','Efficient signed binary multiplication','Memory allocation','Pipeline hazard detection'],a:1,e:'Booth\'s algorithm handles signed 2\'s complement multiplication efficiently, reducing the number of operations needed for strings of 1s.'},
+{id:169,s:'COA',q:'The Harvard architecture differs from Von Neumann in that:',o:['It uses only one memory for everything','It has separate instruction memory and data memory with separate buses','It cannot support pipelining','It has no registers'],a:1,e:'Harvard: separate data and instruction memories allow simultaneous fetch of instruction and data — used in microcontrollers and DSPs.'},
+{id:170,s:'COA',q:'Pipelining improves CPU performance by:',o:['Running each instruction faster','Overlapping the execution of multiple instructions in different stages simultaneously','Reducing the number of instructions','Increasing the clock frequency only'],a:1,e:'Pipelining increases throughput (instructions completed per second) by keeping all pipeline stages busy — like an assembly line.'},
+{id:171,s:'COA',q:'Register indirect addressing uses:',o:['A constant value as the operand','The address stored in a register to access memory','The register value directly as data','An offset added to a base register'],a:1,e:'Register indirect: the operand field specifies a register; that register holds the memory address of the actual data. e.g., MOV R1, (R2) → reads from address in R2.'},
+{id:172,s:'COA',q:'A structural hazard in a pipeline occurs when:',o:['An instruction needs data from a previous unfinished instruction','Two instructions need the same hardware resource at the same time','A branch instruction is encountered','The instruction cache is full'],a:1,e:'Structural hazard: two pipeline stages need the same hardware resource simultaneously (e.g., one memory for both instruction fetch and data access). Solved by duplicating hardware.'},
+{id:173,s:'COA',q:'MIPS (Millions of Instructions Per Second) is a measure of:',o:['Memory bandwidth','Cache hit rate','CPU performance in terms of instruction throughput','Power consumption'],a:2,e:'MIPS = instruction count / (execution time × 10⁶). Higher MIPS = more instructions executed per second, but it doesn\'t account for instruction complexity.'},
+{id:174,s:'COA',q:'Superscalar processors improve performance by:',o:['Increasing clock speed only','Issuing and executing more than one instruction per clock cycle using multiple execution units','Using a single very long instruction','Reducing the instruction set'],a:1,e:'Superscalar: multiple issue slots allow several instructions to begin execution simultaneously each cycle (ILP — Instruction-Level Parallelism).'},
+{id:175,s:'COA',q:'The purpose of a TLB (Translation Lookaside Buffer) in memory management hardware is:',o:['To store the entire page table','To cache recently used virtual-to-physical address translations, speeding up memory access','To handle cache misses','To manage DMA transfers'],a:1,e:'TLB caches recent page table entries. Without TLB, every memory access needs two memory reads (page table + data). With TLB, translations are found in 1-2 ns.'},
+
+// ─── SE (176–200) ─────────────────────────────────────────────────────────
+{id:176,s:'SE',q:'Which SDLC model follows a strict sequential phase-by-phase approach with no going back?',o:['Agile','Spiral','Waterfall','Incremental'],a:2,e:'Waterfall model: Requirements → Design → Implementation → Testing → Maintenance. Each phase must be completed before the next begins — inflexible for changing requirements.'},
+{id:177,s:'SE',q:'In Agile development, a "Sprint" is:',o:['A type of software bug','A fixed-length iteration (typically 1-4 weeks) in which a shippable product increment is built','A performance benchmark test','A code review process'],a:1,e:'Scrum Sprint: time-boxed iteration (usually 2 weeks) delivering a potentially shippable product increment. Followed by Sprint Review and Retrospective.'},
+{id:178,s:'SE',q:'What does unit testing test?',o:['The entire system end-to-end','Individual functions, methods, or classes in isolation','Integration between modules','User acceptance and usability'],a:1,e:'Unit testing validates individual units (functions/methods) in isolation, typically using mocks/stubs for dependencies. Done by developers.'},
+{id:179,s:'SE',q:'Black-box testing focuses on:',o:['Testing internal code structure and logic','Testing based on input/output behavior without knowing internal implementation','Testing only the database layer','Performance under load'],a:1,e:'Black-box: tester has no knowledge of internal code; tests are driven by specifications/requirements. Includes equivalence partitioning and boundary value analysis.'},
+{id:180,s:'SE',q:'Cyclomatic complexity measures:',o:['The number of lines of code','The number of independent execution paths through a program (complexity of control flow)','Memory usage','Number of function calls'],a:1,e:'McCabe\'s Cyclomatic Complexity = E − N + 2P (edges − nodes + 2×connected components). High value → more complex, harder to test and maintain.'},
+{id:181,s:'SE',q:'The Spiral model of software development is best known for:',o:['Strictly sequential phases like Waterfall','Its emphasis on risk analysis and iterative refinement in each loop','Delivering software in small increments without planning','Pair programming'],a:1,e:'Spiral model: each spiral loop goes through planning, risk analysis, engineering, and evaluation. Risk-driven — ideal for large, high-risk projects.'},
+{id:182,s:'SE',q:'Regression testing is performed to:',o:['Test new features only','Ensure that new code changes have not broken previously working functionality','Test software under extreme load','Test a single isolated unit'],a:1,e:'Regression testing re-runs existing test suites after changes to verify no previously passing tests now fail — critical in CI/CD pipelines.'},
+{id:183,s:'SE',q:'What is a Use Case diagram in UML?',o:['A diagram showing the internal class structure','A diagram showing system functionality from the user\'s perspective, depicting actors and their interactions with the system','A timing diagram for real-time systems','A flowchart of algorithm logic'],a:1,e:'Use Case diagram: actors (users/systems) and use cases (functionalities). Shows WHAT the system does, not HOW. Used in requirements gathering.'},
+{id:184,s:'SE',q:'Which type of software maintenance involves modifying software after delivery to correct discovered faults?',o:['Adaptive maintenance','Perfective maintenance','Preventive maintenance','Corrective maintenance'],a:3,e:'Corrective: fixes bugs. Adaptive: adapts to new environment. Perfective: improves performance/maintainability. Preventive: restructures to prevent future failures.'},
+{id:185,s:'SE',q:'Continuous Integration (CI) means:',o:['Deploying to production after every commit','Frequently merging code changes into a shared repository, with automated builds and tests on each merge','Testing only at the end of the sprint','Manual code review before every commit'],a:1,e:'CI: developers integrate code frequently (multiple times per day). Each integration triggers automated build + test, detecting errors quickly.'},
+{id:186,s:'SE',q:'The V-Model (Verification and Validation model) pairs each development phase with:',o:['A corresponding UML diagram','A corresponding testing phase (e.g., unit design ↔ unit testing)','A Scrum ceremony','A risk analysis step'],a:1,e:'V-Model: left side = development phases (requirements → design → coding), right side = testing phases (acceptance → integration → unit), joined at coding.'},
+{id:187,s:'SE',q:'What is technical debt in software development?',o:['The cost of servers and infrastructure','The future rework cost incurred by choosing a quick/easy solution now instead of a better long-term approach','The number of open bugs','The salary cost of developers'],a:1,e:'Technical debt: shortcuts taken now (e.g., skipping tests, hacks) that create extra work later. Like financial debt — it accrues "interest" over time.'},
+{id:188,s:'SE',q:'In Scrum, the Product Backlog is:',o:['A list of completed user stories','An ordered list of everything that might be needed in the product, managed by the Product Owner','The sprint plan for the current iteration','The list of team members'],a:1,e:'Product Backlog: prioritized list of all features, fixes, and enhancements desired in the product. Owned and ordered by the Product Owner.'},
+{id:189,s:'SE',q:'Which testing technique uses specific input values at the edges of equivalence classes?',o:['Equivalence Partitioning','Boundary Value Analysis','Statement Coverage','Decision Coverage'],a:1,e:'Boundary Value Analysis (BVA): tests input at the exact boundaries (min, min+1, max-1, max) and just outside them, where defects are most likely.'},
+{id:190,s:'SE',q:'A class diagram in UML shows:',o:['How objects interact over time','The static structure: classes, attributes, methods, and their relationships (inheritance, association, aggregation, composition)','Deployment of software on hardware','The flow of control in a use case'],a:1,e:'Class diagram is the most used UML diagram for OOP design — shows classes with their members and the structural relationships between them.'},
+{id:191,s:'SE',q:'Code refactoring means:',o:['Rewriting the software from scratch','Restructuring existing code to improve its internal structure without changing external behavior','Adding new features to the codebase','Fixing a bug in production'],a:1,e:'Refactoring improves code quality (readability, maintainability, reducing technical debt) while keeping observable behavior unchanged.'},
+{id:192,s:'SE',q:'Which of the following is a key principle of the Agile Manifesto?',o:['Comprehensive documentation over working software','Responding to change over following a plan','Contract negotiation over customer collaboration','Processes and tools over individuals and interactions'],a:1,e:'The Agile Manifesto (2001) values: Individuals & interactions, Working software, Customer collaboration, Responding to change — OVER their counterparts.'},
+{id:193,s:'SE',q:'Integration testing verifies:',o:['Individual units in isolation','That multiple modules/components work correctly together when combined','End-to-end user workflows','Performance under stress'],a:1,e:'Integration testing: combines units and tests their interfaces and interactions. Detects defects in the communication between modules.'},
+{id:194,s:'SE',q:'The purpose of a Sequence Diagram in UML is to show:',o:['Class hierarchy and inheritance','Static data structure','How objects interact in time sequence, showing the order of messages exchanged','Deployment topology'],a:2,e:'Sequence diagram: shows the time-ordered exchange of messages between objects/lifelines. Excellent for documenting use case scenarios and API interactions.'},
+{id:195,s:'SE',q:'MVC (Model-View-Controller) is a software architectural pattern where:',o:['Model handles UI, View handles data, Controller handles logic','Model represents data/business logic, View handles display, Controller handles user input and mediates between Model and View','All three components are identical','Controller stores all data'],a:1,e:'MVC separates concerns: Model = data/business rules, View = UI rendering, Controller = user input handler that updates Model and View.'},
+{id:196,s:'SE',q:'Which Git command creates a new branch and switches to it?',o:['git branch new-branch','git checkout -b new-branch','git commit -b new-branch','git merge new-branch'],a:1,e:'"git checkout -b branchname" (or "git switch -c branchname" in newer Git) creates and checks out a new branch in one step.'},
+{id:197,s:'SE',q:'The purpose of code review is primarily to:',o:['Slow down development deliberately','Find defects early, share knowledge, enforce standards, and improve code quality','Replace unit testing','Assign blame for bugs'],a:1,e:'Code review: peer examination before merge. Benefits include early bug detection, knowledge transfer, consistency enforcement, and mentoring.'},
+{id:198,s:'SE',q:'White-box testing (also called glass-box or structural testing) requires:',o:['No knowledge of internal code','Knowledge of the internal code structure to design test cases covering paths, branches, and statements','Only end-user participation','Testing through the UI only'],a:1,e:'White-box: tester knows the internal implementation and writes tests targeting specific code paths (statement, branch, path coverage).'},
+{id:199,s:'SE',q:'Software coupling refers to:',o:['How well-defined a module\'s responsibilities are','The degree of interdependence between software modules — high coupling means modules are tightly interrelated','The number of methods in a class','The performance of the software'],a:1,e:'Low coupling = modules are independent, easy to change without affecting others. Aim for LOW coupling + HIGH cohesion for maintainable software.'},
+{id:200,s:'SE',q:'Load testing is performed to:',o:['Test software for security vulnerabilities','Evaluate how the system behaves under expected and peak load conditions','Test individual code units','Verify the UI layout on different screens'],a:1,e:'Load testing simulates real-world user load to check response times, throughput, and stability. Stress testing pushes beyond limits to find breaking points.'},
+];
+
+// Fix duplicate id 66
+let finalQ = [];
+let seen66 = false;
+Q.forEach(q => {
+  if(q.id===66){
+    if(!seen66){ finalQ.push({...q,id:66}); seen66=true; }
+  } else {
+    finalQ.push(q);
+  }
+});
+const questions = finalQ;
+
+const subjectColors = {DSA:'dsa',OS:'os',DBMS:'dbms',CN:'cn',OOP:'oop',COA:'coa',SE:'se'};
+let currentSubject = 'ALL';
+let currentMode = 'browse';
+let quizState = {active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false};
+let browseAnswers = {};
+let totalAnswered=0, totalCorrect=0;
+
+function getFiltered(){
+  if(currentSubject==='ALL') return questions;
+  return questions.filter(q=>q.s===currentSubject);
+}
+
+function setMode(m){
+  currentMode = m;
+  document.getElementById('browseBtn').className='mode-btn'+(m==='browse'?' active':'');
+  document.getElementById('quizBtn').className='mode-btn'+(m==='quiz'?' active':'');
+  if(m==='quiz' && !quizState.started){
+    quizState = {active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false};
+  }
+  renderMain();
+}
+
+function filterSubject(s){
+  currentSubject = s;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  if(currentMode==='quiz') quizState={active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false};
+  renderMain();
+}
+
+function renderMain(){
+  const m = document.getElementById('main');
+  if(currentMode==='browse') m.innerHTML = renderBrowse();
+  else m.innerHTML = renderQuizArea();
+}
+
+function renderBrowse(){
+  const qs = getFiltered();
+  if(!qs.length) return '<div class="no-q">No questions found.</div>';
+  return qs.map(q=>{
+    const sc = subjectColors[q.s]||'dsa';
+    const answered = browseAnswers[q.id] !== undefined;
+    const userAns = browseAnswers[q.id];
+    const opts = q.o.map((o,i)=>{
+      let cls='opt';
+      if(answered){
+        if(i===q.a) cls+=' reveal';
+        else if(i===userAns) cls+=' wrong';
+      }
+      return `<button class="${cls}" onclick="browseAnswer(${q.id},${i})" ${answered?'disabled':''}><span class="opt-label">${String.fromCharCode(65+i)}</span>${o}</button>`;
+    }).join('');
+    const expBlock = answered ? `<div class="answer-reveal"><b>Answer: ${String.fromCharCode(65+q.a)}) ${q.o[q.a]}</b><br>${q.e}</div>` : '';
+    return `<div class="question-block">
+      <div class="q-header">
+        <div class="q-num">${q.id}</div>
+        <div class="q-text" style="flex:1">${q.q}</div>
+        <span class="q-subject ${sc}">${q.s}</span>
+      </div>
+      <div class="options-list">${opts}</div>
+      ${expBlock}
+    </div>`;
+  }).join('');
+}
+
+function browseAnswer(qid, chosen){
+  if(browseAnswers[qid]!==undefined) return;
+  const q = questions.find(x=>x.id===qid);
+  browseAnswers[qid]=chosen;
+  totalAnswered++;
+  if(chosen===q.a) totalCorrect++;
+  updateStats();
+  renderMain();
+  setTimeout(()=>{
+    const el = document.querySelector(`[data-qid="${qid}"]`);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  },50);
+}
+
+function updateStats(){
+  document.getElementById('answeredCount').textContent=totalAnswered;
+  document.getElementById('correctCount').textContent=totalCorrect;
+}
+
+function renderQuizArea(){
+  if(!quizState.started){
+    const qs = getFiltered();
+    const sub = currentSubject==='ALL'?'All Subjects':currentSubject;
+    return `<div class="quiz-start">
+      <h2>Quiz Mode — ${sub}</h2>
+      <p>${qs.length} questions available · 45 seconds per question</p>
+      <div class="count-sel" id="countSel">
+        <button class="count-sel-btn ${quizState.count==10?'active':''}" onclick="setCount(10)">10 Qs</button>
+        <button class="count-sel-btn ${quizState.count==20?'active':''}" onclick="setCount(20)">20 Qs</button>
+        <button class="count-sel-btn ${quizState.count==qs.length?'active':''}" onclick="setCount(${qs.length})">All ${qs.length}</button>
+      </div>
+      <button class="big-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>`;
+  }
+  if(quizState.done){
+    return renderResult();
+  }
+  const q = quizState.q[quizState.idx];
+  const sc = subjectColors[q.s]||'dsa';
+  const pct = Math.round((quizState.idx/quizState.q.length)*100);
+  const answered = quizState.answers[quizState.idx]!==undefined;
+  const userAns = quizState.answers[quizState.idx];
+  const opts = q.o.map((o,i)=>{
+    let cls='opt';
+    if(answered){
+      if(i===q.a) cls+=' reveal';
+      else if(i===userAns) cls+=' wrong';
+    }
+    return `<button class="${cls}" onclick="quizAnswer(${i})" ${answered?'disabled':''}><span class="opt-label">${String.fromCharCode(65+i)}</span>${o}</button>`;
+  }).join('');
+  const expBlock = answered ? `<div class="answer-reveal"><b>Answer: ${String.fromCharCode(65+q.a)}) ${q.o[q.a]}</b><br>${q.e}</div>` : '';
+  const isLast = quizState.idx===quizState.q.length-1;
+  const navBtn = answered ? `<button class="nav-btn primary" onclick="quizNext()">${isLast?'See Results':'Next →'}</button>` : '';
+  const skipBtn = !answered ? `<button class="skip-btn" onclick="quizSkip()">Skip</button>` : '';
+  const warn = quizState.secs<=10;
+  return `<div class="quiz-card">
+    <div class="quiz-top">
+      <span class="quiz-subj ${sc}">${q.s}</span>
+      <span class="quiz-timer${warn?' warn':''}" id="qtimer">⏱ ${quizState.secs}s</span>
+    </div>
+    <div class="progress-wrap"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="quiz-qnum">Question ${quizState.idx+1} of ${quizState.q.length}</div>
+    <div class="quiz-qtext">${q.q}</div>
+    <div class="options-list">${opts}</div>
+    ${expBlock}
+    <div class="quiz-nav">${skipBtn}${navBtn}</div>
+  </div>`;
+}
+
+function renderResult(){
+  const total = quizState.q.length;
+  const pct = Math.round((quizState.score/total)*100);
+  const wrong = quizState.answers.filter((a,i)=>a!==undefined&&a!==-1&&a!==quizState.q[i].a).length;
+  const skipped = quizState.answers.filter(a=>a===-1||a===undefined).length;
+  const grade = pct>=80?'Excellent! OA-Ready 🏆':pct>=60?'Good effort, keep practicing!':'More revision needed 📖';
+  return `<div class="result-card">
+    <div class="score-ring"><div class="pct">${pct}%</div><div class="lbl">Score</div></div>
+    <h2>${grade}</h2>
+    <p>You scored ${quizState.score} out of ${total} questions</p>
+    <div class="result-stats">
+      <div class="rs"><div class="rs-num" style="color:#4ade80">${quizState.score}</div><div class="rs-lbl">Correct</div></div>
+      <div class="rs"><div class="rs-num" style="color:#f87171">${wrong}</div><div class="rs-lbl">Wrong</div></div>
+      <div class="rs"><div class="rs-num" style="color:#fb923c">${skipped}</div><div class="rs-lbl">Skipped</div></div>
+    </div>
+    <div class="action-row">
+      <button class="primary" onclick="startQuiz()">Retry</button>
+      <button onclick="resetQuiz()">Change Topic</button>
+    </div>
+  </div>`;
+}
+
+function setCount(n){
+  quizState.count=n;
+  document.querySelectorAll('.count-sel-btn').forEach(b=>{
+    b.className='count-sel-btn'+(parseInt(b.textContent)==n||b.textContent.startsWith('All '+n)?' active':'');
+  });
+}
+
+function startQuiz(){
+  clearInterval(quizState.timer);
+  const pool = getFiltered();
+  const shuffled = [...pool].sort(()=>Math.random()-0.5);
+  const count = quizState.count||Math.min(10,pool.length);
+  quizState={active:true,q:shuffled.slice(0,count),idx:0,answers:new Array(count).fill(undefined),score:0,timer:null,secs:45,started:true,done:false,count:count};
+  renderMain();
+  startTimer();
+}
+
+function resetQuiz(){
+  clearInterval(quizState.timer);
+  quizState={active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false,done:false};
+  renderMain();
+}
+
+function startTimer(){
+  clearInterval(quizState.timer);
+  quizState.secs=45;
+  quizState.timer=setInterval(()=>{
+    quizState.secs--;
+    const el=document.getElementById('qtimer');
+    if(el){el.textContent='⏱ '+quizState.secs+'s';if(quizState.secs<=10)el.classList.add('warn');}
+    if(quizState.secs<=0){clearInterval(quizState.timer);quizSkip();}
+  },1000);
+}
+
+function quizAnswer(chosen){
+  if(quizState.answers[quizState.idx]!==undefined) return;
+  clearInterval(quizState.timer);
+  quizState.answers[quizState.idx]=chosen;
+  const q=quizState.q[quizState.idx];
+  if(chosen===q.a) quizState.score++;
+  renderMain();
+}
+
+function quizSkip(){
+  clearInterval(quizState.timer);
+  if(quizState.answers[quizState.idx]===undefined) quizState.answers[quizState.idx]=-1;
+  renderMain();
+}
+
+function quizNext(){
+  if(quizState.idx>=quizState.q.length-1){quizState.done=true;renderMain();return;}
+  quizState.idx++;
+  renderMain();
+  startTimer();
+}
+
+// init
+quizState.count=10;
+renderMain();
+</script>
+</body>
+</html>
