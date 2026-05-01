@@ -94,19 +94,10 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
 
 <header>
   <h1>Placement Practice OA &mdash; Top MCQs</h1>
-  <span id="headerCount">200 questions</span>
+  <span id="headerCount"></span>
 </header>
 
-<div class="tab-bar" id="tabBar">
-  <button class="tab active" onclick="filterSubject('ALL')">All (200)</button>
-  <button class="tab" onclick="filterSubject('DSA')">DSA (35)</button>
-  <button class="tab" onclick="filterSubject('OS')">OS (30)</button>
-  <button class="tab" onclick="filterSubject('DBMS')">DBMS (30)</button>
-  <button class="tab" onclick="filterSubject('CN')">Networks (30)</button>
-  <button class="tab" onclick="filterSubject('OOP')">OOP (25)</button>
-  <button class="tab" onclick="filterSubject('COA')">COA (25)</button>
-  <button class="tab" onclick="filterSubject('SE')">Soft. Engg (25)</button>
-</div>
+<div class="tab-bar" id="tabBar"></div>
 
 <div class="mode-bar">
   <button class="mode-btn active" id="browseBtn" onclick="setMode('browse')">Browse Mode</button>
@@ -142,24 +133,24 @@ const Q = [
 {id:18,s:'DSA',q:'The recurrence relation for Merge Sort is:',o:['T(n)=T(n−1)+O(1)','T(n)=2T(n/2)+O(n)','T(n)=T(n/2)+O(1)','T(n)=2T(n−1)+O(1)'],a:1,e:'Merge Sort divides into 2 halves (2T(n/2)) and merges in O(n) → T(n)=2T(n/2)+O(n), solving to O(n log n).'},
 {id:19,s:'DSA',q:'In an AVL tree, the balance factor of any node must be:',o:['−2, −1, 0, 1, 2','{−1, 0, 1} only','Any non-negative integer','0 only'],a:1,e:'AVL invariant: |height(left)−height(right)| ≤ 1, so balance factor ∈ {−1, 0, 1}.'},
 {id:20,s:'DSA',q:'Time complexity of DFS on a graph with V vertices and E edges is:',o:['O(V)','O(E)','O(V+E)','O(V×E)'],a:2,e:'DFS visits every vertex once and examines every edge once → O(V+E).'},
-{id:21,s:'DSA',q:'A circular queue of size n can hold a maximum of how many elements?',o:['n','n−1','n+1','n/2'],a:1,e:'One slot is kept empty to distinguish full from empty states → max n−1 elements.'},
+{id:21,s:'DSA',q:'In an array-based circular queue of size n (using one empty slot technique), maximum number of elements stored is:',o:['n','n−1','n+1','Depends on implementation'],a:1,e:'To distinguish full vs empty, one slot is left unused → max n−1 elements.'},
 {id:22,s:'DSA',q:'Kruskal\'s algorithm is used to find:',o:['Shortest path between two nodes','Minimum Spanning Tree','Maximum flow','Topological sort'],a:1,e:'Kruskal\'s greedily adds the smallest edge not forming a cycle → Minimum Spanning Tree.'},
 {id:23,s:'DSA',q:'What is the amortized time complexity of a push operation on a dynamic array (e.g., ArrayList)?',o:['O(n)','O(log n)','O(1)','O(n²)'],a:2,e:'Although occasional resizing costs O(n), amortized over all pushes the cost is O(1) per operation.'},
-{id:24,s:'DSA',q:'Which of the following searching algorithms requires the input to be sorted?',o:['Linear Search only','Binary Search only','Both Binary and Jump Search','Interpolation Search only'],a:2,e:'Both Binary Search and Jump Search require sorted input to work correctly.'},
+{id:24,s:'DSA',q:'Which of the following searching algorithms require sorted input?',o:['Linear Search','Binary Search','Binary, Jump, and Interpolation Search','DFS'],a:2,e:'Binary Search, Jump Search, and Interpolation Search all require sorted input. Linear Search does not.'},
 {id:25,s:'DSA',q:'Separate chaining in hash tables resolves collision by:',o:['Moving to the next slot','Storing all colliding elements in a linked list at each bucket','Using a second hash function','Rehashing the table'],a:1,e:'Separate chaining keeps a linked list (or other structure) at each bucket to handle multiple keys mapping to the same slot.'},
 {id:26,s:'DSA',q:'What does Dijkstra\'s algorithm use at its core?',o:['DFS','BFS','Greedy selection with priority queue','Dynamic programming table'],a:2,e:'Dijkstra greedily always extends the unvisited node with the current shortest distance using a min-heap.'},
 {id:27,s:'DSA',q:'In a linked list, the time complexity of insertion/deletion at the head is:',o:['O(n)','O(log n)','O(1)','O(n log n)'],a:2,e:'With a head pointer, inserting or deleting the first node requires no traversal → O(1).'},
 {id:28,s:'DSA',q:'Which of the following is NOT a self-balancing binary search tree?',o:['AVL Tree','Red-Black Tree','B-Tree','Plain Binary Search Tree'],a:3,e:'A plain BST has no balancing mechanism; in the worst case (sorted input) it degrades to a linked list O(n) height.'},
 {id:29,s:'DSA',q:'The Bellman-Ford algorithm can correctly handle graphs that contain:',o:['Negative-weight cycles','Negative-weight edges (but no negative cycles)','Only positive weights','Only undirected edges'],a:1,e:'Bellman-Ford handles negative-weight edges and can also detect (but not solve) negative-weight cycles.'},
 {id:30,s:'DSA',q:'Maximum number of nodes at level l of a binary tree (root at level 0) is:',o:['l','l²','2l','2^l'],a:3,e:'At each level the maximum nodes doubles: level 0→1, level 1→2, level l→2^l.'},
-{id:31,s:'DSA',q:'Which sorting algorithm is in-place but NOT stable?',o:['Merge Sort','Insertion Sort','Heap Sort','Bubble Sort'],a:2,e:'Heap Sort is in-place (O(1) extra space) but not stable because the heap operations swap non-adjacent elements.'},
+{id:31,s:'DSA',q:'Which sorting algorithm is in-place but generally NOT stable?',o:['Merge Sort','Insertion Sort','Heap Sort','Bubble Sort'],a:2,e:'Heap Sort is in-place (O(1) space) but not stable due to non-adjacent swaps.'},
 {id:32,s:'DSA',q:'A deque (double-ended queue) supports:',o:['Insertion at front only','Insertion at rear only','Insertion and deletion at both ends','Random access like an array'],a:2,e:'Deque = Double-Ended Queue; it supports push/pop at both front and back.'},
 {id:33,s:'DSA',q:'DFS (Depth-First Search) internally uses which data structure?',o:['Queue','Heap','Stack (or call stack via recursion)','Hash Map'],a:2,e:'DFS uses a stack to track the path to explore; recursion uses the call stack implicitly.'},
 {id:34,s:'DSA',q:'What is the time complexity of building a binary heap from an unsorted array of n elements?',o:['O(n log n)','O(n)','O(log n)','O(n²)'],a:1,e:'The heapify-down process on all non-leaf nodes can be shown to run in O(n) using a tighter mathematical analysis.'},
 {id:35,s:'DSA',q:'Which of the following is a non-comparison-based sorting algorithm?',o:['QuickSort','MergeSort','Counting Sort','HeapSort'],a:2,e:'Counting Sort sorts by counting element frequencies — it never compares two elements, achieving O(n+k).'},
 
 // ─── OS (36–65) ───────────────────────────────────────────────────────────
-{id:36,s:'OS',q:'Which CPU scheduling algorithm can lead to starvation of low-priority processes?',o:['FCFS','Round Robin','Priority Scheduling','Shortest Job First (non-preemptive)'],a:2,e:'Priority Scheduling always runs the highest-priority process; low-priority processes may wait indefinitely (starve) if high-priority jobs keep arriving. SJF can also cause it.'},
+{id:36,s:'OS',q:'Which CPU scheduling algorithms can lead to starvation?',o:['FCFS','Round Robin','Priority Scheduling and SJF','None'],a:2,e:'Both Priority Scheduling and SJF can cause starvation if shorter or higher-priority jobs keep arriving.'},
 {id:37,s:'OS',q:'What is the main advantage of Round Robin scheduling?',o:['Minimizes average waiting time','Maximizes CPU throughput','Ensures fairness and prevents starvation','Handles I/O-bound processes best'],a:2,e:'Round Robin gives each process a time quantum in turn, ensuring no process waits forever → fairness and starvation-free.'},
 {id:38,s:'OS',q:'Which of the four Coffman conditions is NOT required for deadlock?',o:['Mutual Exclusion','Hold and Wait','Preemption (allowed)','Circular Wait'],a:2,e:'The four necessary conditions are Mutual Exclusion, Hold-and-Wait, No Preemption, and Circular Wait. Preemption being ALLOWED breaks the deadlock condition "No Preemption."'},
 {id:39,s:'OS',q:'The Banker\'s Algorithm is used for:',o:['Deadlock detection after it occurs','Deadlock avoidance by checking safe state','Memory allocation using paging','CPU burst estimation'],a:1,e:'The Banker\'s Algorithm checks whether granting a resource request keeps the system in a safe state, thus avoiding deadlock.'},
@@ -177,7 +168,7 @@ const Q = [
 {id:51,s:'OS',q:'The three requirements for a correct solution to the critical section problem are:',o:['Safety, Liveness, Fairness','Mutual Exclusion, Progress, Bounded Waiting','Starvation-free, Deadlock-free, Speed','Lock, Unlock, Reset'],a:1,e:'Mutual Exclusion: only one process in CS at a time. Progress: if no one is in CS, a process wishing to enter will eventually. Bounded Waiting: there is a bound on how long a process waits.'},
 {id:52,s:'OS',q:'Spooling (Simultaneous Peripheral Operations On-Line) is primarily associated with:',o:['CPU scheduling','Virtual memory management','I/O management (e.g., print queuing)','File system journaling'],a:2,e:'Spooling queues I/O jobs (especially for slow devices like printers) in a buffer, decoupling fast CPU from slow devices.'},
 {id:53,s:'OS',q:'A "zombie process" in Unix is one that:',o:['Is consuming abnormally high CPU','Has finished execution but its exit status has not yet been read by its parent','Is waiting indefinitely for I/O','Is a process running in kernel mode only'],a:1,e:'After a child calls exit(), it becomes a zombie: its PCB stays in the process table until the parent calls wait() to collect the exit status.'},
-{id:54,s:'OS',q:'Paging in memory management eliminates which type of fragmentation?',o:['Internal fragmentation','External fragmentation','Both internal and external','Neither'],a:1,e:'Paging eliminates external fragmentation because any free frame can be assigned to a process. Internal fragmentation may still occur in the last page.'},
+{id:54,s:'OS',q:'Paging eliminates which type of fragmentation?',o:['Internal fragmentation','External fragmentation','Both','None'],a:1,e:'Paging eliminates external fragmentation, but internal fragmentation may still occur in the last page.'},
 {id:55,s:'OS',q:'The P (wait) operation on a semaphore s does which of the following?',o:['Increments s; if s<0 the process continues','Decrements s; if s<0 the process blocks','Sets s to 0 always','Doubles s'],a:1,e:'P(s): s = s−1; if s<0, the calling process is added to the waiting queue and blocked.'},
 {id:56,s:'OS',q:'Which of the following is an example of a preemptive scheduling algorithm?',o:['FCFS','Non-preemptive SJF','Round Robin','All of the above'],a:2,e:'Round Robin is preemptive — a running process is forcibly moved out when its time quantum expires.'},
 {id:57,s:'OS',q:'Virtual memory allows:',o:['Processes to run only in RAM','Programs to use more address space than physical RAM available','Faster disk access','Sharing of physical pages is impossible'],a:1,e:'Virtual memory uses disk as an extension of RAM, letting processes use a large virtual address space regardless of physical RAM size.'},
@@ -192,7 +183,6 @@ const Q = [
 
 // ─── DBMS (66–95) ─────────────────────────────────────────────────────────
 {id:66,s:'DBMS',q:'Which of the following is NOT one of the ACID properties of a database transaction?',o:['Atomicity','Consistency','Isolation','Durability', 'Dependency'],a:4,e:'ACID = Atomicity, Consistency, Isolation, Durability. "Dependency" is not an ACID property.'},
-{id:66,s:'DBMS',q:'Which of the following is NOT one of the ACID properties?',o:['Atomicity','Consistency','Dependency','Durability'],a:2,e:'ACID = Atomicity, Consistency, Isolation, Durability. "Dependency" is not an ACID property.'},
 {id:67,s:'DBMS',q:'A primary key in a relational table:',o:['Can contain NULL values','Must be unique and NOT NULL','Can be duplicated across rows','Is always a single column'],a:1,e:'Primary key uniquely identifies each row — it must be unique and cannot contain NULL.'},
 {id:68,s:'DBMS',q:'A foreign key in a table:',o:['Must be unique in the referencing table','References a primary key (or unique key) in another table to enforce referential integrity','Cannot be NULL','Must match the data type of the referenced key only if numeric'],a:1,e:'A foreign key is a column whose values match the primary key of another table, enforcing referential integrity.'},
 {id:69,s:'DBMS',q:'A relation is in First Normal Form (1NF) if:',o:['It has no partial dependencies','All attributes are atomic (no multi-valued or composite attributes)','It has no transitive dependencies','It has a BCNF violation'],a:1,e:'1NF requires every attribute to hold only atomic (indivisible) values — no repeating groups or nested sets.'},
@@ -213,7 +203,7 @@ const Q = [
 {id:84,s:'DBMS',q:'A "superkey" in a relation is:',o:['A key with only one attribute','Any set of attributes that uniquely identifies a tuple (may have extra attributes)','A key that references another relation','The same as a candidate key'],a:1,e:'A superkey is any set of attributes that uniquely identifies a row. A candidate key is a minimal superkey (no proper subset is also a superkey).'},
 {id:85,s:'DBMS',q:'Which SQL command is used to remove a table and all its data permanently?',o:['DELETE','TRUNCATE','DROP','REMOVE'],a:2,e:'DROP TABLE removes the table definition AND all its data. TRUNCATE removes data but keeps the structure. DELETE removes rows but can be rolled back.'},
 {id:86,s:'DBMS',q:'What is a trigger in a database?',o:['A manual stored procedure call','An automatic procedure that fires in response to INSERT, UPDATE, or DELETE on a table','A special type of index','An integrity constraint'],a:1,e:'A trigger is a DB object that automatically executes a specified action (PL/SQL or T-SQL block) when a specified DML event occurs on a table.'},
-{id:87,s:'DBMS',q:'Which of the following SQL aggregate functions ignores NULL values?',o:['COUNT(*)','SUM(col)','Both COUNT(*) and SUM','None — all aggregates include NULLs'],a:1,e:'SUM, AVG, MIN, MAX, COUNT(column) all ignore NULLs. COUNT(*) counts all rows including those with NULLs.'},
+{id:87,s:'DBMS',q:'Which of the following SQL aggregate functions ignore NULL values?',o:['COUNT(*)','SUM(col), AVG(col), MIN(col), MAX(col)','Only COUNT(*)','None'],a:1,e:'SUM, AVG, MIN, MAX ignore NULL values. COUNT(*) counts all rows including NULLs.'},
 {id:88,s:'DBMS',q:'In the Entity-Relationship (ER) model, a weak entity is one that:',o:['Has no attributes','Cannot exist without being associated with a strong (owner) entity','Has more than one primary key','Is represented by a diamond shape'],a:1,e:'A weak entity lacks a complete primary key on its own and depends on a strong entity for identification. It uses a discriminator + owner\'s PK.'},
 {id:89,s:'DBMS',q:'The "lost update" problem in databases occurs when:',o:['Two transactions read and write the same data item, with one transaction\'s update overwritten by the other','A transaction reads data that another has deleted','A transaction reads an uncommitted value','The database crashes during a write'],a:0,e:'Lost update: T1 reads X, T2 reads X, T1 writes X, T2 writes X → T1\'s update is lost. Prevented by proper locking or MVCC.'},
 {id:90,s:'DBMS',q:'Which of the following is TRUE about a stored procedure?',o:['It is compiled and stored on the client side','It is a precompiled set of SQL statements stored in the database that can accept parameters','It cannot be called from application code','It can only return a single value'],a:1,e:'Stored procedures are server-side precompiled SQL programs. They reduce network traffic, improve performance, and support parameters.'},
@@ -335,26 +325,81 @@ const Q = [
 {id:198,s:'SE',q:'White-box testing (also called glass-box or structural testing) requires:',o:['No knowledge of internal code','Knowledge of the internal code structure to design test cases covering paths, branches, and statements','Only end-user participation','Testing through the UI only'],a:1,e:'White-box: tester knows the internal implementation and writes tests targeting specific code paths (statement, branch, path coverage).'},
 {id:199,s:'SE',q:'Software coupling refers to:',o:['How well-defined a module\'s responsibilities are','The degree of interdependence between software modules — high coupling means modules are tightly interrelated','The number of methods in a class','The performance of the software'],a:1,e:'Low coupling = modules are independent, easy to change without affecting others. Aim for LOW coupling + HIGH cohesion for maintainable software.'},
 {id:200,s:'SE',q:'Load testing is performed to:',o:['Test software for security vulnerabilities','Evaluate how the system behaves under expected and peak load conditions','Test individual code units','Verify the UI layout on different screens'],a:1,e:'Load testing simulates real-world user load to check response times, throughput, and stability. Stress testing pushes beyond limits to find breaking points.'},
+{id:201,s:'DSA',q:'What is the time complexity of union-find with path compression and union by rank?',o:['O(n)','O(log n)','O(α(n))','O(n log n)'],a:2,e:'Amortized time complexity is inverse Ackermann function α(n), nearly constant.'},
+{id:202,s:'OS',q:'Which scheduling algorithm is optimal for minimizing average waiting time?',o:['FCFS','Round Robin','SJF','Priority'],a:2,e:'SJF gives minimum average waiting time when burst times are known.'},
+{id:203,s:'DBMS',q:'Which anomaly is removed by 2NF?',o:['Insertion anomaly','Update anomaly','Partial dependency','Transitive dependency'],a:2,e:'2NF removes partial dependency.'},
+{id:204,s:'CN',q:'Which protocol ensures reliable delivery over unreliable network?',o:['IP','UDP','TCP','HTTP'],a:2,e:'TCP ensures reliability using ACKs, retransmissions, sequencing.'},
+{id:205,s:'OOP',q:'Which principle reduces tight coupling?',o:['Encapsulation','Abstraction','Low coupling','Inheritance'],a:2,e:'Low coupling reduces dependency between modules.'},
 ];
 
-// Fix duplicate id 66
-let finalQ = [];
-let seen66 = false;
-Q.forEach(q => {
-  if(q.id===66){
-    if(!seen66){ finalQ.push({...q,id:66}); seen66=true; }
-  } else {
-    finalQ.push(q);
+function seededRandom(seed){
+  let value = seed % 2147483647;
+  if(value <= 0) value += 2147483646;
+  return () => {
+    value = value * 16807 % 2147483647;
+    return (value - 1) / 2147483646;
+  };
+}
+
+function hashString(str){
+  let hash = 0;
+  for(let i = 0; i < str.length; i++){
+    hash = ((hash * 31) + str.charCodeAt(i)) % 2147483647;
   }
-});
-const questions = finalQ;
+  return hash || 1;
+}
+
+function shuffleArray(items, seed){
+  const arr = [...items];
+  const rand = seededRandom(seed);
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(rand() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function shuffleQuestionOptions(list){
+  return list.map(q => {
+    const optionsWithFlag = q.o.map((option, index) => ({
+      option,
+      isCorrect: index === q.a
+    }));
+    const seed = hashString(`${q.id}|${q.q}|${q.e}`);
+    const shuffled = shuffleArray(optionsWithFlag, seed);
+    const answerIndex = shuffled.findIndex(item => item.isCorrect);
+
+    return {
+      ...q,
+      o: shuffled.map(item => item.option),
+      a: answerIndex
+    };
+  });
+}
+
+const questions = shuffleQuestionOptions(Q);
 
 const subjectColors = {DSA:'dsa',OS:'os',DBMS:'dbms',CN:'cn',OOP:'oop',COA:'coa',SE:'se'};
+const subjectLabels = {ALL:'All',DSA:'DSA',OS:'OS',DBMS:'DBMS',CN:'Networks',OOP:'OOP',COA:'COA',SE:'Soft. Engg'};
+const subjectOrder = ['ALL','DSA','OS','DBMS','CN','OOP','COA','SE'];
 let currentSubject = 'ALL';
 let currentMode = 'browse';
 let quizState = {active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false};
 let browseAnswers = {};
 let totalAnswered=0, totalCorrect=0;
+
+function getSubjectCount(subject){
+  if(subject==='ALL') return questions.length;
+  return questions.filter(q=>q.s===subject).length;
+}
+
+function renderTabs(){
+  document.getElementById('headerCount').textContent = `${questions.length} questions`;
+  document.getElementById('tabBar').innerHTML = subjectOrder.map(subject => {
+    const active = currentSubject===subject ? ' active' : '';
+    return `<button class="tab${active}" onclick="filterSubject('${subject}')">${subjectLabels[subject]} (${getSubjectCount(subject)})</button>`;
+  }).join('');
+}
 
 function getFiltered(){
   if(currentSubject==='ALL') return questions;
@@ -373,9 +418,8 @@ function setMode(m){
 
 function filterSubject(s){
   currentSubject = s;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
   if(currentMode==='quiz') quizState={active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false};
+  renderTabs();
   renderMain();
 }
 
@@ -562,6 +606,7 @@ function quizNext(){
 
 // init
 quizState.count=10;
+renderTabs();
 renderMain();
 </script>
 </body>
