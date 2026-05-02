@@ -1,0 +1,28 @@
+{
+  "name": "oa-practice",
+  "version": "1.0.0",
+  "description": "Placement Practice OA - Top MCQs",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SachinManral/OA-Practice.git"
+  },
+  "keywords": [
+    "practice",
+    "interview",
+    "mcq",
+    "placement"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SachinManral/OA-Practice/issues"
+  },
+  "homepage": "https://github.com/SachinManral/OA-Practice#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
