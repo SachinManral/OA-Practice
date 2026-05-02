@@ -134,6 +134,7 @@ header{padding:14px 16px;align-items:flex-start;flex-direction:column;gap:10px}
 <div class="container" id="main"></div>
 
 <script src="josh-question-bank.js"></script>
+<script src="josh-master-question-bank.js"></script>
 <script>
 const Q = [
 // ─── DSA (1–35) ───────────────────────────────────────────────────────────
@@ -436,6 +437,11 @@ const BANKS = {
     ...window.JOSH_TECH_SET,
     countLimit: window.JOSH_TECH_SET.quizMaxCount || 50,
     questions: shuffleQuestionOptions(window.JOSH_TECH_SET.questions, 'jtg')
+  },
+  jtm: {
+    ...window.JOSH_MASTER_SET,
+    countLimit: window.JOSH_MASTER_SET.quizMaxCount || 50,
+    questions: shuffleQuestionOptions(window.JOSH_MASTER_SET.questions, 'jtm')
   }
 };
 
@@ -677,11 +683,8 @@ function renderQuizArea(){
     return `<div class="quiz-start">
       <h2>Quiz Mode — ${sub}</h2>
       <p>${qs.length} questions available · 45 seconds per question</p>
-      <div class="count-sel" id="countSel">
-        <button class="count-sel-btn ${quizState.count==10?'active':''}" onclick="setCount(10)">10 Qs</button>
-        <button class="count-sel-btn ${quizState.count==20?'active':''}" onclick="setCount(20)">20 Qs</button>
-        <button class="count-sel-btn ${quizState.count==qs.length?'active':''}" onclick="setCount(${qs.length})">All ${qs.length}</button>
-      </div>
+      <div class="count-sel" id="countSel">${countButtons}</div>
+      ${note}
       <button class="big-btn" onclick="startQuiz()">Start Quiz →</button>
     </div>`;
   }
