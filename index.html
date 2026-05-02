@@ -10,14 +10,18 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#e2e8f
 header{background:#161b27;border-bottom:1px solid #2d3748;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 header h1{font-size:18px;font-weight:600;color:#e2e8f0}
 header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;border-radius:20px}
+.set-bar{display:flex;gap:8px;padding:12px 20px;overflow-x:auto;background:#0f1117;border-bottom:1px solid #1a2035;flex-wrap:wrap}
+.set-btn{padding:7px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #2d3748;color:#a0aec0;background:transparent;white-space:nowrap;transition:all .15s}
+.set-btn:hover{border-color:#4a5568;color:#e2e8f0}
+.set-btn.active{background:#1d4ed8;border-color:#1d4ed8;color:#fff}
 .tab-bar{display:flex;gap:6px;padding:14px 20px;overflow-x:auto;background:#0f1117;border-bottom:1px solid #1a2035;flex-wrap:wrap}
 .tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid #2d3748;color:#a0aec0;background:transparent;white-space:nowrap;transition:all .15s}
 .tab:hover{border-color:#4a5568;color:#e2e8f0}
 .tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
-.mode-bar{display:flex;gap:10px;padding:12px 20px;align-items:center;border-bottom:1px solid #1a2035}
+.mode-bar{display:flex;gap:10px;padding:12px 20px;align-items:center;border-bottom:1px solid #1a2035;flex-wrap:wrap}
 .mode-btn{padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #2d3748;color:#a0aec0;background:transparent}
 .mode-btn.active{background:#1a2035;color:#e2e8f0;border-color:#4a5568}
-.stat-row{display:flex;gap:16px;margin-left:auto;font-size:12px;color:#718096}
+.stat-row{display:flex;gap:16px;margin-left:auto;font-size:12px;color:#718096;flex-wrap:wrap}
 .stat-row b{color:#e2e8f0}
 .container{max-width:860px;margin:0 auto;padding:16px 20px}
 
@@ -42,6 +46,7 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
 .answer-reveal{margin-top:10px;padding:10px 12px;background:#0d1f2d;border-left:3px solid #2563eb;border-radius:0 6px 6px 0;font-size:12.5px;color:#93c5fd;line-height:1.6}
 .answer-reveal b{color:#60a5fa}
 .toggle-ans{margin-top:8px;font-size:12px;color:#4a9eff;cursor:pointer;text-decoration:underline;display:inline-block;background:none;border:none;padding:0}
+.question-flag{display:inline-flex;align-items:center;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.3px;background:#241338;color:#c084fc;border:1px solid #5b21b6;text-transform:uppercase}
 
 /* Quiz mode */
 .quiz-card{background:#161b27;border:1px solid #1e2d45;border-radius:12px;padding:24px}
@@ -64,7 +69,7 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
 .score-ring .lbl{font-size:10px;color:#718096}
 .result-card h2{font-size:20px;font-weight:600;margin-bottom:6px}
 .result-card p{font-size:13px;color:#718096;margin-bottom:24px}
-.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.result-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:24px}
 .rs{background:#0f1117;border-radius:8px;padding:14px}
 .rs-num{font-size:22px;font-weight:600}
 .rs-lbl{font-size:11px;color:#718096;margin-top:2px}
@@ -74,11 +79,13 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
 .no-q{text-align:center;padding:60px 20px;color:#718096;font-size:14px}
 .quiz-start{text-align:center;padding:40px 20px}
 .quiz-start h2{font-size:20px;color:#e2e8f0;margin-bottom:8px}
-.quiz-start p{font-size:13px;color:#718096;margin-bottom:24px}
+.quiz-start p{font-size:13px;color:#718096;margin-bottom:12px}
 .quiz-start .big-btn{padding:12px 32px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
 .count-sel{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
 .count-sel button{padding:6px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #2d3748;color:#a0aec0;background:transparent}
 .count-sel button.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.quiz-note{max-width:520px;margin:0 auto 20px;padding:10px 14px;border-radius:8px;background:#111827;border:1px solid #374151;color:#cbd5e1;font-size:12.5px;line-height:1.6}
+.quiz-note strong{color:#fbbf24}
 
 /* Colors per subject */
 .dsa{background:#0e2341;color:#60a5fa}
@@ -88,15 +95,28 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
 .oop{background:#1a0a2e;color:#e879f9}
 .coa{background:#2d1a0a;color:#fbbf24}
 .se{background:#0f2d2d;color:#2dd4bf}
+.sql{background:#10261a;color:#4ade80}
+.apt{background:#2b210c;color:#fbbf24}
+.ptr{background:#1e1338;color:#c084fc}
+.c-out{background:#0f2236;color:#7dd3fc}
+
+@media (max-width:700px){
+header{padding:14px 16px;align-items:flex-start;flex-direction:column;gap:10px}
+.mode-bar{padding:12px 16px}
+.set-bar,.tab-bar{padding-left:16px;padding-right:16px}
+.container{padding:16px}
+.stat-row{margin-left:0}
+}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Placement Practice OA &mdash; Top MCQs</h1>
-  <span id="headerCount"></span>
+  <h1 id="pageTitle">Placement Practice OA - Top MCQs</h1>
+  <span id="headerMeta"></span>
 </header>
 
+<div class="set-bar" id="setBar"></div>
 <div class="tab-bar" id="tabBar"></div>
 
 <div class="mode-bar">
@@ -105,11 +125,14 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
   <div class="stat-row">
     <span>Answered: <b id="answeredCount">0</b></span>
     <span>Correct: <b id="correctCount" style="color:#4ade80">0</b></span>
+    <span id="wrongStat" hidden>Wrong: <b id="wrongCount" style="color:#f87171">0</b></span>
+    <span id="scoreStat" hidden>Score: <b id="scoreCount" style="color:#60a5fa">0</b></span>
   </div>
 </div>
 
 <div class="container" id="main"></div>
 
+<script src="josh-question-bank.js"></script>
 <script>
 const Q = [
 // ─── DSA (1–35) ───────────────────────────────────────────────────────────
@@ -359,13 +382,13 @@ function shuffleArray(items, seed){
   return arr;
 }
 
-function shuffleQuestionOptions(list){
+function shuffleQuestionOptions(list, bankSeed){
   return list.map(q => {
     const optionsWithFlag = q.o.map((option, index) => ({
       option,
       isCorrect: index === q.a
     }));
-    const seed = hashString(`${q.id}|${q.q}|${q.e}`);
+    const seed = hashString(`${bankSeed}|${q.id}|${q.q}|${q.e}`);
     const shuffled = shuffleArray(optionsWithFlag, seed);
     const answerIndex = shuffled.findIndex(item => item.isCorrect);
 
@@ -377,48 +400,189 @@ function shuffleQuestionOptions(list){
   });
 }
 
-const questions = shuffleQuestionOptions(Q);
-
-const subjectColors = {DSA:'dsa',OS:'os',DBMS:'dbms',CN:'cn',OOP:'oop',COA:'coa',SE:'se'};
-const subjectLabels = {ALL:'All',DSA:'DSA',OS:'OS',DBMS:'DBMS',CN:'Networks',OOP:'OOP',COA:'COA',SE:'Soft. Engg'};
-const subjectOrder = ['ALL','DSA','OS','DBMS','CN','OOP','COA','SE'];
-let currentSubject = 'ALL';
-let currentMode = 'browse';
-let quizState = {active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false};
-let browseAnswers = {};
-let totalAnswered=0, totalCorrect=0;
-
-function getSubjectCount(subject){
-  if(subject==='ALL') return questions.length;
-  return questions.filter(q=>q.s===subject).length;
+function escapeHtml(value){
+  return String(value)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
 }
 
-function renderTabs(){
-  document.getElementById('headerCount').textContent = `${questions.length} questions`;
-  document.getElementById('tabBar').innerHTML = subjectOrder.map(subject => {
-    const active = currentSubject===subject ? ' active' : '';
-    return `<button class="tab${active}" onclick="filterSubject('${subject}')">${subjectLabels[subject]} (${getSubjectCount(subject)})</button>`;
-  }).join('');
+function formatText(value){
+  return escapeHtml(value).replace(/\n/g,'<br>');
+}
+
+function letterFor(index){
+  return String.fromCharCode(65 + index);
+}
+
+const BANKS = {
+  practice: {
+    id: 'practice',
+    label: 'Core CS Set',
+    title: 'Placement Practice OA - Top MCQs',
+    badge: 'Standard scoring',
+    quizNote: 'Scoring: 1 point for every correct answer. Wrong answers do not carry a penalty.',
+    countLimit: Number.POSITIVE_INFINITY,
+    scoreConfig: {correct: 1, wrong: 0, timerSeconds: 45, noNegativeFlag: null},
+    questions: shuffleQuestionOptions(Q, 'practice'),
+    subjectColors: {DSA:'dsa',OS:'os',DBMS:'dbms',CN:'cn',OOP:'oop',COA:'coa',SE:'se'},
+    subjectLabels: {ALL:'All',DSA:'DSA',OS:'OS',DBMS:'DBMS',CN:'Networks',OOP:'OOP',COA:'COA',SE:'Soft. Engg'},
+    subjectOrder: ['ALL','DSA','OS','DBMS','CN','OOP','COA','SE']
+  },
+  jtg: {
+    ...window.JOSH_TECH_SET,
+    countLimit: window.JOSH_TECH_SET.quizMaxCount || 50,
+    questions: shuffleQuestionOptions(window.JOSH_TECH_SET.questions, 'jtg')
+  }
+};
+
+function createQuizState(count){
+  return {
+    active: false,
+    q: [],
+    idx: 0,
+    answers: [],
+    score: 0,
+    timer: null,
+    secs: 45,
+    started: false,
+    done: false,
+    count: count || 10,
+    correct: 0,
+    wrong: 0,
+    skipped: 0
+  };
+}
+
+function createBankProgress(){
+  return {
+    browseAnswers: {},
+    totalAnswered: 0,
+    totalCorrect: 0,
+    totalWrong: 0,
+    totalScore: 0,
+    quizState: createQuizState(10)
+  };
+}
+
+const bankProgress = Object.keys(BANKS).reduce((acc, id) => {
+  acc[id] = createBankProgress();
+  return acc;
+}, {});
+
+let activeBankId = 'practice';
+let currentSubject = 'ALL';
+let currentMode = 'browse';
+
+function getActiveBank(){
+  return BANKS[activeBankId];
+}
+
+function getProgress(){
+  return bankProgress[activeBankId];
+}
+
+function getQuizState(){
+  return getProgress().quizState;
+}
+
+function resetQuizStateFor(bankId){
+  const progress = bankProgress[bankId];
+  clearInterval(progress.quizState.timer);
+  progress.quizState = createQuizState(progress.quizState.count || 10);
+}
+
+function hasNoNegative(q, bank){
+  const flag = bank.scoreConfig.noNegativeFlag;
+  return flag ? !!q[flag] : false;
+}
+
+function getQuestionScore(bank, q, isCorrect){
+  if(isCorrect) return bank.scoreConfig.correct;
+  if(hasNoNegative(q, bank)) return 0;
+  return bank.scoreConfig.wrong;
+}
+
+function getSubjectCount(subject){
+  const bank = getActiveBank();
+  if(subject==='ALL') return bank.questions.length;
+  return bank.questions.filter(q=>q.s===subject).length;
 }
 
 function getFiltered(){
-  if(currentSubject==='ALL') return questions;
-  return questions.filter(q=>q.s===currentSubject);
+  const bank = getActiveBank();
+  if(currentSubject==='ALL') return bank.questions;
+  return bank.questions.filter(q=>q.s===currentSubject);
+}
+
+function getCountOptions(total){
+  const bank = getActiveBank();
+  const cap = Math.min(total, bank.countLimit || total);
+  return [...new Set([10, 20, cap].filter(value => value > 0 && value <= total))];
+}
+
+function normalizeQuizCount(total){
+  const progress = getProgress();
+  const options = getCountOptions(total);
+  if(!options.length){
+    progress.quizState.count = 0;
+    return 0;
+  }
+  if(!options.includes(progress.quizState.count)){
+    progress.quizState.count = progress.quizState.count > options[options.length-1] ? options[options.length-1] : options[0];
+  }
+  return progress.quizState.count;
+}
+
+function renderHeader(){
+  const bank = getActiveBank();
+  document.getElementById('pageTitle').textContent = bank.title;
+  document.getElementById('headerMeta').textContent = `${bank.questions.length} questions · ${bank.badge}`;
+}
+
+function renderSetBar(){
+  document.getElementById('setBar').innerHTML = Object.values(BANKS).map(bank => {
+    const active = bank.id === activeBankId ? ' active' : '';
+    return `<button class="set-btn${active}" onclick="switchSet('${bank.id}')">${escapeHtml(bank.label)}</button>`;
+  }).join('');
+}
+
+function renderTabs(){
+  const bank = getActiveBank();
+  document.getElementById('tabBar').innerHTML = bank.subjectOrder.map(subject => {
+    const active = currentSubject===subject ? ' active' : '';
+    return `<button class="tab${active}" onclick="filterSubject('${subject}')">${escapeHtml(bank.subjectLabels[subject])} (${getSubjectCount(subject)})</button>`;
+  }).join('');
+}
+
+function updateModeButtons(){
+  document.getElementById('browseBtn').className='mode-btn'+(currentMode==='browse'?' active':'');
+  document.getElementById('quizBtn').className='mode-btn'+(currentMode==='quiz'?' active':'');
+}
+
+function switchSet(bankId){
+  if(bankId === activeBankId) return;
+  resetQuizStateFor(activeBankId);
+  activeBankId = bankId;
+  currentSubject = 'ALL';
+  currentMode = 'browse';
+  renderApp();
 }
 
 function setMode(m){
   currentMode = m;
-  document.getElementById('browseBtn').className='mode-btn'+(m==='browse'?' active':'');
-  document.getElementById('quizBtn').className='mode-btn'+(m==='quiz'?' active':'');
-  if(m==='quiz' && !quizState.started){
-    quizState = {active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false};
+  updateModeButtons();
+  if(m==='quiz' && !getQuizState().started){
+    resetQuizStateFor(activeBankId);
   }
   renderMain();
 }
 
 function filterSubject(s){
   currentSubject = s;
-  if(currentMode==='quiz') quizState={active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false};
+  if(currentMode==='quiz') resetQuizStateFor(activeBankId);
   renderTabs();
   renderMain();
 }
@@ -430,27 +594,32 @@ function renderMain(){
 }
 
 function renderBrowse(){
+  const bank = getActiveBank();
+  const progress = getProgress();
   const qs = getFiltered();
   if(!qs.length) return '<div class="no-q">No questions found.</div>';
   return qs.map(q=>{
-    const sc = subjectColors[q.s]||'dsa';
-    const answered = browseAnswers[q.id] !== undefined;
-    const userAns = browseAnswers[q.id];
+    const sc = bank.subjectColors[q.s]||'dsa';
+    const answered = progress.browseAnswers[q.id] !== undefined;
+    const userAns = progress.browseAnswers[q.id];
     const opts = q.o.map((o,i)=>{
       let cls='opt';
       if(answered){
         if(i===q.a) cls+=' reveal';
         else if(i===userAns) cls+=' wrong';
       }
-      return `<button class="${cls}" onclick="browseAnswer(${q.id},${i})" ${answered?'disabled':''}><span class="opt-label">${String.fromCharCode(65+i)}</span>${o}</button>`;
+      return `<button class="${cls}" onclick="browseAnswer(${q.id},${i})" ${answered?'disabled':''}><span class="opt-label">${letterFor(i)}</span>${escapeHtml(o)}</button>`;
     }).join('');
-    const expBlock = answered ? `<div class="answer-reveal"><b>Answer: ${String.fromCharCode(65+q.a)}) ${q.o[q.a]}</b><br>${q.e}</div>` : '';
-    return `<div class="question-block">
+    const expBlock = answered ? `<div class="answer-reveal"><b>Answer: ${letterFor(q.a)}) ${escapeHtml(q.o[q.a])}</b><br>${formatText(q.e)}</div>` : '';
+    const codeBlock = q.c ? `<div class="q-code">${escapeHtml(q.c)}</div>` : '';
+    const flag = hasNoNegative(q, bank) ? '<span class="question-flag">No negative</span>' : '';
+    return `<div class="question-block" data-qid="${q.id}">
       <div class="q-header">
         <div class="q-num">${q.id}</div>
-        <div class="q-text" style="flex:1">${q.q}</div>
-        <span class="q-subject ${sc}">${q.s}</span>
+        <div class="q-text" style="flex:1">${escapeHtml(q.q)}${flag}</div>
+        <span class="q-subject ${sc}">${escapeHtml(q.s)}</span>
       </div>
+      ${codeBlock}
       <div class="options-list">${opts}</div>
       ${expBlock}
     </div>`;
@@ -458,11 +627,19 @@ function renderBrowse(){
 }
 
 function browseAnswer(qid, chosen){
-  if(browseAnswers[qid]!==undefined) return;
-  const q = questions.find(x=>x.id===qid);
-  browseAnswers[qid]=chosen;
-  totalAnswered++;
-  if(chosen===q.a) totalCorrect++;
+  const bank = getActiveBank();
+  const progress = getProgress();
+  if(progress.browseAnswers[qid]!==undefined) return;
+  const q = bank.questions.find(x=>x.id===qid);
+  progress.browseAnswers[qid]=chosen;
+  progress.totalAnswered++;
+  if(chosen===q.a){
+    progress.totalCorrect++;
+    progress.totalScore += getQuestionScore(bank, q, true);
+  }else{
+    progress.totalWrong++;
+    progress.totalScore += getQuestionScore(bank, q, false);
+  }
   updateStats();
   renderMain();
   setTimeout(()=>{
@@ -472,14 +649,30 @@ function browseAnswer(qid, chosen){
 }
 
 function updateStats(){
-  document.getElementById('answeredCount').textContent=totalAnswered;
-  document.getElementById('correctCount').textContent=totalCorrect;
+  const bank = getActiveBank();
+  const progress = getProgress();
+  const showDetailed = bank.scoreConfig.wrong !== 0;
+  document.getElementById('answeredCount').textContent=progress.totalAnswered;
+  document.getElementById('correctCount').textContent=progress.totalCorrect;
+  document.getElementById('wrongCount').textContent=progress.totalWrong;
+  document.getElementById('scoreCount').textContent=progress.totalScore;
+  document.getElementById('wrongStat').hidden = !showDetailed;
+  document.getElementById('scoreStat').hidden = !showDetailed;
 }
 
 function renderQuizArea(){
+  const bank = getActiveBank();
+  const quizState = getQuizState();
   if(!quizState.started){
     const qs = getFiltered();
     const sub = currentSubject==='ALL'?'All Subjects':currentSubject;
+    const currentCount = normalizeQuizCount(qs.length);
+    const countButtons = getCountOptions(qs.length).map(count => {
+      const active = currentCount===count ? 'active' : '';
+      const label = count===qs.length ? `All ${count}` : `${count} Qs`;
+      return `<button class="${active}" onclick="setCount(${count})">${label}</button>`;
+    }).join('');
+    const note = bank.quizNote ? `<div class="quiz-note">${formatText(bank.quizNote)}</div>` : '';
     return `<div class="quiz-start">
       <h2>Quiz Mode — ${sub}</h2>
       <p>${qs.length} questions available · 45 seconds per question</p>
@@ -495,7 +688,7 @@ function renderQuizArea(){
     return renderResult();
   }
   const q = quizState.q[quizState.idx];
-  const sc = subjectColors[q.s]||'dsa';
+  const sc = bank.subjectColors[q.s]||'dsa';
   const pct = Math.round((quizState.idx/quizState.q.length)*100);
   const answered = quizState.answers[quizState.idx]!==undefined;
   const userAns = quizState.answers[quizState.idx];
@@ -505,21 +698,24 @@ function renderQuizArea(){
       if(i===q.a) cls+=' reveal';
       else if(i===userAns) cls+=' wrong';
     }
-    return `<button class="${cls}" onclick="quizAnswer(${i})" ${answered?'disabled':''}><span class="opt-label">${String.fromCharCode(65+i)}</span>${o}</button>`;
+    return `<button class="${cls}" onclick="quizAnswer(${i})" ${answered?'disabled':''}><span class="opt-label">${letterFor(i)}</span>${escapeHtml(o)}</button>`;
   }).join('');
-  const expBlock = answered ? `<div class="answer-reveal"><b>Answer: ${String.fromCharCode(65+q.a)}) ${q.o[q.a]}</b><br>${q.e}</div>` : '';
+  const expBlock = answered ? `<div class="answer-reveal"><b>Answer: ${letterFor(q.a)}) ${escapeHtml(q.o[q.a])}</b><br>${formatText(q.e)}</div>` : '';
+  const codeBlock = q.c ? `<div class="q-code">${escapeHtml(q.c)}</div>` : '';
+  const flag = hasNoNegative(q, bank) ? '<span class="question-flag">No negative</span>' : '';
   const isLast = quizState.idx===quizState.q.length-1;
   const navBtn = answered ? `<button class="nav-btn primary" onclick="quizNext()">${isLast?'See Results':'Next →'}</button>` : '';
   const skipBtn = !answered ? `<button class="skip-btn" onclick="quizSkip()">Skip</button>` : '';
   const warn = quizState.secs<=10;
   return `<div class="quiz-card">
     <div class="quiz-top">
-      <span class="quiz-subj ${sc}">${q.s}</span>
+      <span class="quiz-subj ${sc}">${escapeHtml(q.s)}</span>
       <span class="quiz-timer${warn?' warn':''}" id="qtimer">⏱ ${quizState.secs}s</span>
     </div>
     <div class="progress-wrap"><div class="progress-fill" style="width:${pct}%"></div></div>
-    <div class="quiz-qnum">Question ${quizState.idx+1} of ${quizState.q.length}</div>
-    <div class="quiz-qtext">${q.q}</div>
+    <div class="quiz-qnum">Question ${quizState.idx+1} of ${quizState.q.length} · Score: ${quizState.score}</div>
+    <div class="quiz-qtext">${escapeHtml(q.q)}${flag}</div>
+    ${codeBlock}
     <div class="options-list">${opts}</div>
     ${expBlock}
     <div class="quiz-nav">${skipBtn}${navBtn}</div>
@@ -527,17 +723,21 @@ function renderQuizArea(){
 }
 
 function renderResult(){
+  const bank = getActiveBank();
+  const quizState = getQuizState();
   const total = quizState.q.length;
-  const pct = Math.round((quizState.score/total)*100);
-  const wrong = quizState.answers.filter((a,i)=>a!==undefined&&a!==-1&&a!==quizState.q[i].a).length;
-  const skipped = quizState.answers.filter(a=>a===-1||a===undefined).length;
+  const accuracy = total ? Math.round((quizState.correct/total)*100) : 0;
+  const maxScore = total * bank.scoreConfig.correct;
+  const pct = accuracy;
+  const wrong = quizState.wrong;
+  const skipped = quizState.skipped;
   const grade = pct>=80?'Excellent! OA-Ready 🏆':pct>=60?'Good effort, keep practicing!':'More revision needed 📖';
   return `<div class="result-card">
     <div class="score-ring"><div class="pct">${pct}%</div><div class="lbl">Score</div></div>
     <h2>${grade}</h2>
     <p>You scored ${quizState.score} out of ${total} questions</p>
     <div class="result-stats">
-      <div class="rs"><div class="rs-num" style="color:#4ade80">${quizState.score}</div><div class="rs-lbl">Correct</div></div>
+      <div class="rs"><div class="rs-num" style="color:#4ade80">${quizState.correct}</div><div class="rs-lbl">Correct</div></div>
       <div class="rs"><div class="rs-num" style="color:#f87171">${wrong}</div><div class="rs-lbl">Wrong</div></div>
       <div class="rs"><div class="rs-num" style="color:#fb923c">${skipped}</div><div class="rs-lbl">Skipped</div></div>
     </div>
@@ -549,31 +749,32 @@ function renderResult(){
 }
 
 function setCount(n){
-  quizState.count=n;
-  document.querySelectorAll('.count-sel-btn').forEach(b=>{
-    b.className='count-sel-btn'+(parseInt(b.textContent)==n||b.textContent.startsWith('All '+n)?' active':'');
-  });
+  getProgress().quizState.count=n;
+  renderMain();
 }
 
 function startQuiz(){
-  clearInterval(quizState.timer);
+  const bank = getActiveBank();
+  const progress = getProgress();
+  clearInterval(progress.quizState.timer);
   const pool = getFiltered();
   const shuffled = [...pool].sort(()=>Math.random()-0.5);
-  const count = quizState.count||Math.min(10,pool.length);
-  quizState={active:true,q:shuffled.slice(0,count),idx:0,answers:new Array(count).fill(undefined),score:0,timer:null,secs:45,started:true,done:false,count:count};
+  const count = normalizeQuizCount(pool.length)||Math.min(10,pool.length);
+  progress.quizState={active:true,q:shuffled.slice(0,count),idx:0,answers:new Array(count).fill(undefined),score:0,timer:null,secs:bank.scoreConfig.timerSeconds,started:true,done:false,count:count,correct:0,wrong:0,skipped:0};
   renderMain();
   startTimer();
 }
 
 function resetQuiz(){
-  clearInterval(quizState.timer);
-  quizState={active:false,q:[],idx:0,answers:[],score:0,timer:null,secs:45,started:false,done:false};
+  resetQuizStateFor(activeBankId);
   renderMain();
 }
 
 function startTimer(){
+  const bank = getActiveBank();
+  const quizState = getQuizState();
   clearInterval(quizState.timer);
-  quizState.secs=45;
+  quizState.secs=bank.scoreConfig.timerSeconds;
   quizState.timer=setInterval(()=>{
     quizState.secs--;
     const el=document.getElementById('qtimer');
@@ -583,31 +784,50 @@ function startTimer(){
 }
 
 function quizAnswer(chosen){
+  const bank = getActiveBank();
+  const quizState = getQuizState();
   if(quizState.answers[quizState.idx]!==undefined) return;
   clearInterval(quizState.timer);
   quizState.answers[quizState.idx]=chosen;
   const q=quizState.q[quizState.idx];
-  if(chosen===q.a) quizState.score++;
+  if(chosen===q.a){
+    quizState.correct++;
+    quizState.score += getQuestionScore(bank, q, true);
+  }else{
+    quizState.wrong++;
+    quizState.score += getQuestionScore(bank, q, false);
+  }
   renderMain();
 }
 
 function quizSkip(){
+  const quizState = getQuizState();
   clearInterval(quizState.timer);
-  if(quizState.answers[quizState.idx]===undefined) quizState.answers[quizState.idx]=-1;
+  if(quizState.answers[quizState.idx]===undefined){
+    quizState.answers[quizState.idx]=-1;
+    quizState.skipped++;
+  }
   renderMain();
 }
 
 function quizNext(){
+  const quizState = getQuizState();
   if(quizState.idx>=quizState.q.length-1){quizState.done=true;renderMain();return;}
   quizState.idx++;
   renderMain();
   startTimer();
 }
 
-// init
-quizState.count=10;
-renderTabs();
-renderMain();
+function renderApp(){
+  renderHeader();
+  renderSetBar();
+  renderTabs();
+  updateModeButtons();
+  updateStats();
+  renderMain();
+}
+
+renderApp();
 </script>
 </body>
 </html>
