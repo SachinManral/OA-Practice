@@ -118,7 +118,7 @@ int main(){
     ], a: 0, e: "a==5 is true, so evaluate b==10?100:200. Since b==10 is also true, the result is 100."},
   {s: "COUT", d: "m", q: "What is the output?", c: `class Main {
   public static void main(String[] args) {
-    char[] arr = "Hello\0".toCharArray();
+    char[] arr = "Hello".toCharArray();
     System.out.print(arr.length);
     System.out.print(" " + "Hello".length());
   }
@@ -127,7 +127,7 @@ int main(){
       "5 5",
       "6 6",
       "5 6"
-    ], a: 0, e: "The Java char array intentionally includes a null character, so its length is 6. The visible string Hello has length 5."},
+    ], a: 1, e: "Java strings are not null-terminated. toCharArray() copies only the visible characters, so arr.length is 5 and \"Hello\".length() is also 5."},
   {s: "COUT", d: "h", q: "What is the output?", c: `class Main {
   static void inc(int x) { x++; }
   public static void main(String[] args) {
