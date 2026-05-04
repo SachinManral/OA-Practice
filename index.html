@@ -89,6 +89,44 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
 .round-tag.medium{background:#2d1a0a;color:#fbbf24;border-color:#854d0e}
 .round-tag.hard{background:#2d1810;color:#fb923c;border-color:#9a3412}
 .round-tag.platform{background:#0d1f2d;color:#93c5fd;border-color:#1d4ed8}
+.round-study{display:flex;flex-direction:column;gap:14px}
+.round-hero{background:#161b27;border:1px solid #1e2d45;border-radius:12px;padding:18px}
+.round-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.round-eyebrow{font-size:11px;color:#60a5fa;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.round-bank-title{font-size:20px;font-weight:650;color:#e2e8f0;line-height:1.25}
+.round-bank-subtitle{max-width:680px;font-size:13px;color:#94a3b8;margin-top:7px;line-height:1.55}
+.round-hero-badge{font-size:11px;color:#93c5fd;background:#0d1f2d;border:1px solid #1d4ed8;border-radius:999px;padding:5px 10px;white-space:nowrap}
+.round-bank-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+.round-stat{background:#0f1117;border:1px solid #1e2d45;border-radius:8px;padding:10px 12px;min-width:0;font-size:11px;color:#94a3b8}
+.round-stat b{display:block;font-size:17px;color:#e2e8f0;margin-bottom:3px}
+.round-control-panel{background:#111827;border:1px solid #1e2d45;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.round-search{width:100%;padding:10px 12px;border:1px solid #2d3748;border-radius:8px;background:#0a0e17;color:#e2e8f0;font-size:14px;margin:0}
+.round-filter-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.round-filter-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#718096;font-weight:700;margin-right:2px}
+.round-filter-btn{border:1px solid #2d3748;background:transparent;color:#a0aec0;border-radius:999px;padding:6px 10px;font-size:12px;cursor:pointer}
+.round-filter-btn:hover{border-color:#4a5568;color:#e2e8f0}
+.round-filter-btn.active{background:#1d4ed8;border-color:#2563eb;color:#fff}
+.round-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:14px;align-items:start}
+.round-roadmap{position:sticky;top:152px;background:#111827;border:1px solid #1e2d45;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.round-roadmap-title{font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:2px 2px 4px}
+.round-roadmap-btn{width:100%;border:1px solid transparent;background:transparent;color:#cbd5e1;text-align:left;border-radius:8px;padding:9px;cursor:pointer}
+.round-roadmap-btn:hover{background:#161b27;border-color:#263449}
+.round-roadmap-btn.active{background:#0d1f2d;border-color:#2563eb}
+.round-roadmap-main{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.round-roadmap-name{font-size:12px;font-weight:650}
+.round-roadmap-count{font-size:11px;color:#93c5fd}
+.round-roadmap-desc{display:block;font-size:11px;color:#718096;line-height:1.35;margin-top:3px}
+.round-results{min-width:0;display:flex;flex-direction:column;gap:12px}
+.round-results-top{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#94a3b8;font-size:12px}
+.round-results-top b{color:#e2e8f0}
+.round-section{background:transparent;border:0;margin-bottom:2px}
+.round-heading{border-radius:10px}
+.round-q{position:relative}
+.round-q-num{font-variant-numeric:tabular-nums}
+.round-q-kicker{font-size:11px;color:#718096;margin-bottom:4px}
+.round-q-text strong{color:#e2e8f0}
+.round-empty{background:#111827;border:1px solid #1e2d45;border-radius:12px;padding:36px 18px;text-align:center;color:#94a3b8;font-size:14px}
+.round-empty b{display:block;color:#e2e8f0;margin-bottom:5px}
 
 /* Quiz mode */
 .quiz-card{background:#161b27;border:1px solid #1e2d45;border-radius:12px;padding:24px}
@@ -148,6 +186,11 @@ header{padding:14px 16px;align-items:flex-start;flex-direction:column;gap:10px}
 .set-bar,.tab-bar{padding-left:16px;padding-right:16px}
 .container{padding:16px}
 .stat-row{margin-left:0}
+.round-hero-top{flex-direction:column;gap:10px}
+.round-hero-badge{align-self:flex-start}
+.round-bank-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.round-layout{grid-template-columns:1fr}
+.round-roadmap{position:static}
 .round-heading{align-items:flex-start;flex-wrap:wrap}
 .round-count{width:100%;padding-left:0}
 .round-q{padding:12px}
@@ -531,6 +574,8 @@ let activeBankId = 'practice';
 let currentSubject = 'ALL';
 let currentMode = 'browse';
 let roundSearchTerm = '';
+let activeRoundFilter = 'ALL';
+let activeDifficultyFilter = 'ALL';
 
 function getActiveBank(){
   return BANKS[activeBankId];
@@ -586,9 +631,11 @@ function getFiltered(){
     return bank.rounds.map(round => ({
       ...round,
       questions: round.questions.filter(q => {
+        const byRound = activeRoundFilter === 'ALL' || round.short === activeRoundFilter;
+        const byDifficulty = activeDifficultyFilter === 'ALL' || q.diff === activeDifficultyFilter;
         const byTopic = currentSubject === 'ALL' || q.tags.includes(currentSubject);
         const haystack = `${q.t} ${q.tags.join(' ')} ${q.diff} ${q.p}`.toLowerCase();
-        return byTopic && (!roundSearchTerm || haystack.includes(roundSearchTerm));
+        return byRound && byDifficulty && byTopic && (!roundSearchTerm || haystack.includes(roundSearchTerm));
       })
     })).filter(round => round.questions.length);
   }
@@ -652,6 +699,8 @@ function switchSet(bankId){
   currentSubject = 'ALL';
   currentMode = 'browse';
   roundSearchTerm = '';
+  activeRoundFilter = 'ALL';
+  activeDifficultyFilter = 'ALL';
   renderApp();
 }
 
@@ -689,18 +738,47 @@ function renderRoundBankBrowse(){
   const rounds = getFiltered();
   const shownTotal = rounds.reduce((sum, round) => sum + round.questions.length, 0);
   const allTotal = getRoundQuestionsFlat(bank).length;
-  const header = `<div class="round-bank-head">
-    <div class="round-bank-title">Josh Technology Group DSA Question Bank</div>
-    <div class="round-bank-subtitle">${escapeHtml(bank.description)}</div>
-    <div class="round-bank-stats">
-      <div class="round-stat"><b>${shownTotal}</b>Showing now</div>
-      <div class="round-stat"><b>${allTotal}</b>Total DSA questions</div>
-      <div class="round-stat"><b>${bank.rounds.length}</b>Rounds covered</div>
-      <div class="round-stat"><b>Trees &amp; LL</b>Primary focus</div>
+  const topicSummary = getTopRoundTopics(bank, 3).join(', ');
+  const hardCount = getRoundQuestionsFlat(bank).filter(q => q.diff === 'hard').length;
+  const header = `<section class="round-hero">
+    <div class="round-hero-top">
+      <div>
+        <div class="round-eyebrow">Coding and interview round bank</div>
+        <div class="round-bank-title">Josh Technology Group DSA Question Bank</div>
+        <div class="round-bank-subtitle">${escapeHtml(bank.description)}</div>
+      </div>
+      <span class="round-hero-badge">Browse only</span>
     </div>
-  </div>`;
-  const search = `<input class="round-search" id="roundSearchBox" type="text" value="${escapeHtml(roundSearchTerm)}" placeholder="Search by keyword, topic, difficulty, or platform..." oninput="setRoundSearch(this.value)">`;
-  if(!rounds.length) return `${header}${search}<div class="no-q">No questions match this search or topic.</div>`;
+    <div class="round-bank-stats">
+      <div class="round-stat"><b>${shownTotal}</b>Questions in view</div>
+      <div class="round-stat"><b>${allTotal}</b>Total DSA prompts</div>
+      <div class="round-stat"><b>${bank.rounds.length}</b>Non-MCQ rounds</div>
+      <div class="round-stat"><b>${hardCount}</b>Hard problems</div>
+    </div>
+  </section>`;
+  const controls = `<section class="round-control-panel">
+    <input class="round-search" id="roundSearchBox" type="text" value="${escapeHtml(roundSearchTerm)}" placeholder="Search by keyword, topic, difficulty, or platform..." oninput="setRoundSearch(this.value)">
+    <div class="round-filter-row">
+      <span class="round-filter-label">Difficulty</span>
+      ${renderRoundFilterButton('All', 'ALL', activeDifficultyFilter, 'setRoundDifficulty')}
+      ${renderRoundFilterButton('Easy', 'easy', activeDifficultyFilter, 'setRoundDifficulty')}
+      ${renderRoundFilterButton('Medium', 'medium', activeDifficultyFilter, 'setRoundDifficulty')}
+      ${renderRoundFilterButton('Hard', 'hard', activeDifficultyFilter, 'setRoundDifficulty')}
+    </div>
+    <div class="round-filter-row">
+      <span class="round-filter-label">Round</span>
+      ${renderRoundFilterButton('All rounds', 'ALL', activeRoundFilter, 'setRoundFilter')}
+      ${bank.rounds.map(round => renderRoundFilterButton(round.short, round.short, activeRoundFilter, 'setRoundFilter')).join('')}
+    </div>
+  </section>`;
+  const roadmap = `<aside class="round-roadmap">
+    <div class="round-roadmap-title">Round roadmap</div>
+    ${renderRoundRoadmapButton({short:'ALL', name:'All rounds', desc:`${topicSummary} focus`, questions:getRoundQuestionsFlat(bank)}, activeRoundFilter)}
+    ${bank.rounds.map(round => renderRoundRoadmapButton(round, activeRoundFilter)).join('')}
+  </aside>`;
+  if(!rounds.length){
+    return `<div class="round-study">${header}${controls}<div class="round-layout">${roadmap}<div class="round-empty"><b>No matching questions</b>Try clearing a filter or searching a broader topic.</div></div></div>`;
+  }
   const body = rounds.map(round => `<section class="round-section">
     <button class="round-heading" onclick="toggleRoundSection(this)">
       <span class="round-badge ${round.badge}">${escapeHtml(round.short)}</span>
@@ -715,6 +793,7 @@ function renderRoundBankBrowse(){
       ${round.questions.map((q, i) => `<article class="round-q">
         <span class="round-q-num">${String(i + 1).padStart(2,'0')}</span>
         <div class="round-q-body">
+          <div class="round-q-kicker">${escapeHtml(round.short)} / ${escapeHtml(q.diff.toUpperCase())}${q.p ? ` / ${escapeHtml(q.p)}` : ''}</div>
           <div class="round-q-text">${formatText(q.t)}</div>
           <div class="round-tags">
             ${q.tags.map(tag => `<span class="round-tag">${escapeHtml(tag)}</span>`).join('')}
@@ -725,13 +804,52 @@ function renderRoundBankBrowse(){
       </article>`).join('')}
     </div>
   </section>`).join('');
-  return header + search + body;
+  const resultHeader = `<div class="round-results-top"><span><b>${shownTotal}</b> questions grouped by round</span><span>${escapeHtml(currentSubject === 'ALL' ? 'All topics' : currentSubject)}</span></div>`;
+  return `<div class="round-study">${header}${controls}<div class="round-layout">${roadmap}<main class="round-results">${resultHeader}${body}</main></div></div>`;
+}
+
+function renderRoundFilterButton(label, value, current, fnName){
+  const active = value === current ? ' active' : '';
+  return `<button class="round-filter-btn${active}" onclick="${fnName}('${escapeHtml(value)}')">${escapeHtml(label)}</button>`;
+}
+
+function renderRoundRoadmapButton(round, current){
+  const active = round.short === current ? ' active' : '';
+  const count = round.questions.length;
+  return `<button class="round-roadmap-btn${active}" onclick="setRoundFilter('${escapeHtml(round.short)}')">
+    <span class="round-roadmap-main">
+      <span class="round-roadmap-name">${escapeHtml(round.name)}</span>
+      <span class="round-roadmap-count">${count}</span>
+    </span>
+    <span class="round-roadmap-desc">${escapeHtml(round.desc)}</span>
+  </button>`;
+}
+
+function getTopRoundTopics(bank, limit){
+  const counts = {};
+  getRoundQuestionsFlat(bank).forEach(q => q.tags.forEach(tag => {
+    counts[tag] = (counts[tag] || 0) + 1;
+  }));
+  return Object.entries(counts)
+    .sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit)
+    .map(([tag]) => tag);
 }
 
 function toggleRoundSection(btn){
   const section = btn.closest('.round-section');
   section.classList.toggle('collapsed');
   btn.querySelector('.round-toggle').textContent = section.classList.contains('collapsed') ? '>' : 'v';
+}
+
+function setRoundFilter(value){
+  activeRoundFilter = value;
+  renderMain();
+}
+
+function setRoundDifficulty(value){
+  activeDifficultyFilter = value;
+  renderMain();
 }
 
 function setRoundSearch(value){
