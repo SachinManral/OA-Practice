@@ -52,6 +52,44 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
 .toggle-ans{margin-top:8px;font-size:12px;color:#4a9eff;cursor:pointer;text-decoration:underline;display:inline-block;background:none;border:none;padding:0}
 .question-flag{display:inline-flex;align-items:center;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.3px;background:#241338;color:#c084fc;border:1px solid #5b21b6;text-transform:uppercase}
 
+/* DSA round bank */
+.round-bank-head{background:#161b27;border:1px solid #1e2d45;border-radius:12px;padding:18px;margin-bottom:14px}
+.round-bank-title{font-size:19px;font-weight:600;color:#e2e8f0}
+.round-bank-subtitle{font-size:13px;color:#94a3b8;margin-top:6px;line-height:1.5}
+.round-bank-stats{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.round-stat{background:#0f1117;border:1px solid #1e2d45;border-radius:8px;padding:9px 12px;min-width:118px;font-size:11px;color:#94a3b8}
+.round-stat b{display:block;font-size:16px;color:#e2e8f0;margin-bottom:2px}
+.round-search{width:100%;padding:10px 12px;border:1px solid #2d3748;border-radius:8px;background:#0a0e17;color:#e2e8f0;font-size:14px;margin:0 0 14px}
+.round-search:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.16)}
+.round-section{margin-bottom:14px}
+.round-heading{display:flex;align-items:center;gap:10px;width:100%;background:#161b27;border:1px solid #1e2d45;border-radius:10px;padding:12px 14px;color:#e2e8f0;cursor:pointer;text-align:left}
+.round-heading:hover{border-color:#334155;background:#182033}
+.round-badge{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-radius:999px;padding:4px 9px;border:1px solid transparent;white-space:nowrap}
+.round-badge.r2{background:#10261a;color:#4ade80;border-color:#166534}
+.round-badge.r3{background:#2d1a0a;color:#fbbf24;border-color:#854d0e}
+.round-badge.r4{background:#0e2341;color:#60a5fa;border-color:#1d4ed8}
+.round-badge.t1{background:#1a1040;color:#a78bfa;border-color:#5b21b6}
+.round-badge.t2{background:#2d1810;color:#fb923c;border-color:#9a3412}
+.round-badge.t3{background:#2b1020;color:#f472b6;border-color:#9d174d}
+.round-heading-main{min-width:0;flex:1}
+.round-name{font-size:14px;font-weight:600}
+.round-desc{font-size:11.5px;color:#94a3b8;margin-top:3px;line-height:1.4}
+.round-count{font-size:12px;color:#94a3b8;white-space:nowrap}
+.round-toggle{font-size:12px;color:#60a5fa;min-width:14px;text-align:center}
+.round-section.collapsed .round-list{display:none}
+.round-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.round-q{background:#111827;border:1px solid #1e2d45;border-radius:10px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start}
+.round-q:hover{border-color:#334155}
+.round-q-num{min-width:30px;height:28px;border-radius:7px;background:#1e2d45;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#60a5fa}
+.round-q-body{flex:1;min-width:0}
+.round-q-text{font-size:13.5px;line-height:1.65;color:#e2e8f0}
+.round-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.round-tag{font-size:10.5px;padding:3px 8px;border-radius:999px;background:#0f1117;border:1px solid #263449;color:#94a3b8}
+.round-tag.easy{background:#10261a;color:#4ade80;border-color:#166534}
+.round-tag.medium{background:#2d1a0a;color:#fbbf24;border-color:#854d0e}
+.round-tag.hard{background:#2d1810;color:#fb923c;border-color:#9a3412}
+.round-tag.platform{background:#0d1f2d;color:#93c5fd;border-color:#1d4ed8}
+
 /* Quiz mode */
 .quiz-card{background:#161b27;border:1px solid #1e2d45;border-radius:12px;padding:24px}
 .quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
@@ -110,6 +148,9 @@ header{padding:14px 16px;align-items:flex-start;flex-direction:column;gap:10px}
 .set-bar,.tab-bar{padding-left:16px;padding-right:16px}
 .container{padding:16px}
 .stat-row{margin-left:0}
+.round-heading{align-items:flex-start;flex-wrap:wrap}
+.round-count{width:100%;padding-left:0}
+.round-q{padding:12px}
 }
 </style>
 </head>
@@ -138,6 +179,7 @@ header{padding:14px 16px;align-items:flex-start;flex-direction:column;gap:10px}
 
 <script src="josh-question-bank.js"></script>
 <script src="josh-master-question-bank.js"></script>
+<script src="josh-dsa-round-bank.js"></script>
 <script>
 const Q = [
 // ─── DSA (1–35) ───────────────────────────────────────────────────────────
@@ -445,6 +487,9 @@ const BANKS = {
     ...window.JOSH_MASTER_SET,
     countLimit: window.JOSH_MASTER_SET.quizMaxCount || 50,
     questions: shuffleQuestionOptions(window.JOSH_MASTER_SET.questions, 'jtm')
+  },
+  dsaRounds: {
+    ...window.JOSH_DSA_ROUND_SET
   }
 };
 
@@ -485,9 +530,18 @@ const bankProgress = Object.keys(BANKS).reduce((acc, id) => {
 let activeBankId = 'practice';
 let currentSubject = 'ALL';
 let currentMode = 'browse';
+let roundSearchTerm = '';
 
 function getActiveBank(){
   return BANKS[activeBankId];
+}
+
+function isRoundBank(bank = getActiveBank()){
+  return bank.type === 'roundBank';
+}
+
+function getRoundQuestionsFlat(bank = getActiveBank()){
+  return bank.rounds.flatMap(round => round.questions);
 }
 
 function getProgress(){
@@ -517,12 +571,27 @@ function getQuestionScore(bank, q, isCorrect){
 
 function getSubjectCount(subject){
   const bank = getActiveBank();
+  if(isRoundBank(bank)){
+    const questions = getRoundQuestionsFlat(bank);
+    if(subject==='ALL') return questions.length;
+    return questions.filter(q=>q.tags.includes(subject)).length;
+  }
   if(subject==='ALL') return bank.questions.length;
   return bank.questions.filter(q=>q.s===subject).length;
 }
 
 function getFiltered(){
   const bank = getActiveBank();
+  if(isRoundBank(bank)){
+    return bank.rounds.map(round => ({
+      ...round,
+      questions: round.questions.filter(q => {
+        const byTopic = currentSubject === 'ALL' || q.tags.includes(currentSubject);
+        const haystack = `${q.t} ${q.tags.join(' ')} ${q.diff} ${q.p}`.toLowerCase();
+        return byTopic && (!roundSearchTerm || haystack.includes(roundSearchTerm));
+      })
+    })).filter(round => round.questions.length);
+  }
   if(currentSubject==='ALL') return bank.questions;
   return bank.questions.filter(q=>q.s===currentSubject);
 }
@@ -548,8 +617,9 @@ function normalizeQuizCount(total){
 
 function renderHeader(){
   const bank = getActiveBank();
+  const total = isRoundBank(bank) ? getRoundQuestionsFlat(bank).length : bank.questions.length;
   document.getElementById('pageTitle').textContent = bank.title;
-  document.getElementById('headerMeta').textContent = `${bank.questions.length} questions · ${bank.badge}`;
+  document.getElementById('headerMeta').textContent = `${total} questions - ${bank.badge}`;
 }
 
 function renderSetBar(){
@@ -568,8 +638,11 @@ function renderTabs(){
 }
 
 function updateModeButtons(){
+  const roundBank = isRoundBank();
   document.getElementById('browseBtn').className='mode-btn'+(currentMode==='browse'?' active':'');
   document.getElementById('quizBtn').className='mode-btn'+(currentMode==='quiz'?' active':'');
+  document.getElementById('quizBtn').hidden = roundBank;
+  document.querySelector('.stat-row').hidden = roundBank;
 }
 
 function switchSet(bankId){
@@ -578,10 +651,12 @@ function switchSet(bankId){
   activeBankId = bankId;
   currentSubject = 'ALL';
   currentMode = 'browse';
+  roundSearchTerm = '';
   renderApp();
 }
 
 function setMode(m){
+  if(m === 'quiz' && isRoundBank()) return;
   currentMode = m;
   updateModeButtons();
   if(m==='quiz' && !getQuizState().started){
@@ -599,8 +674,76 @@ function filterSubject(s){
 
 function renderMain(){
   const m = document.getElementById('main');
+  if(isRoundBank()){
+    currentMode = 'browse';
+    m.innerHTML = renderRoundBankBrowse();
+    updateModeButtons();
+    return;
+  }
   if(currentMode==='browse') m.innerHTML = renderBrowse();
   else m.innerHTML = renderQuizArea();
+}
+
+function renderRoundBankBrowse(){
+  const bank = getActiveBank();
+  const rounds = getFiltered();
+  const shownTotal = rounds.reduce((sum, round) => sum + round.questions.length, 0);
+  const allTotal = getRoundQuestionsFlat(bank).length;
+  const header = `<div class="round-bank-head">
+    <div class="round-bank-title">Josh Technology Group DSA Question Bank</div>
+    <div class="round-bank-subtitle">${escapeHtml(bank.description)}</div>
+    <div class="round-bank-stats">
+      <div class="round-stat"><b>${shownTotal}</b>Showing now</div>
+      <div class="round-stat"><b>${allTotal}</b>Total DSA questions</div>
+      <div class="round-stat"><b>${bank.rounds.length}</b>Rounds covered</div>
+      <div class="round-stat"><b>Trees &amp; LL</b>Primary focus</div>
+    </div>
+  </div>`;
+  const search = `<input class="round-search" id="roundSearchBox" type="text" value="${escapeHtml(roundSearchTerm)}" placeholder="Search by keyword, topic, difficulty, or platform..." oninput="setRoundSearch(this.value)">`;
+  if(!rounds.length) return `${header}${search}<div class="no-q">No questions match this search or topic.</div>`;
+  const body = rounds.map(round => `<section class="round-section">
+    <button class="round-heading" onclick="toggleRoundSection(this)">
+      <span class="round-badge ${round.badge}">${escapeHtml(round.short)}</span>
+      <span class="round-heading-main">
+        <span class="round-name">${escapeHtml(round.name)}</span>
+        <span class="round-desc">${escapeHtml(round.desc)}</span>
+      </span>
+      <span class="round-count">${round.questions.length} question${round.questions.length!==1?'s':''}</span>
+      <span class="round-toggle">v</span>
+    </button>
+    <div class="round-list">
+      ${round.questions.map((q, i) => `<article class="round-q">
+        <span class="round-q-num">${String(i + 1).padStart(2,'0')}</span>
+        <div class="round-q-body">
+          <div class="round-q-text">${formatText(q.t)}</div>
+          <div class="round-tags">
+            ${q.tags.map(tag => `<span class="round-tag">${escapeHtml(tag)}</span>`).join('')}
+            <span class="round-tag ${escapeHtml(q.diff)}">${escapeHtml(q.diff.charAt(0).toUpperCase()+q.diff.slice(1))}</span>
+            ${q.p ? `<span class="round-tag platform">${escapeHtml(q.p)}</span>` : ''}
+          </div>
+        </div>
+      </article>`).join('')}
+    </div>
+  </section>`).join('');
+  return header + search + body;
+}
+
+function toggleRoundSection(btn){
+  const section = btn.closest('.round-section');
+  section.classList.toggle('collapsed');
+  btn.querySelector('.round-toggle').textContent = section.classList.contains('collapsed') ? '>' : 'v';
+}
+
+function setRoundSearch(value){
+  roundSearchTerm = value.toLowerCase().trim();
+  renderMain();
+  setTimeout(() => {
+    const input = document.getElementById('roundSearchBox');
+    if(input){
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length);
+    }
+  }, 0);
 }
 
 function renderBrowse(){
@@ -660,6 +803,7 @@ function browseAnswer(qid, chosen){
 
 function updateStats(){
   const bank = getActiveBank();
+  if(isRoundBank(bank)) return;
   const progress = getProgress();
   const showDetailed = bank.scoreConfig.wrong !== 0;
   document.getElementById('answeredCount').textContent=progress.totalAnswered;
