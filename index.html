@@ -179,6 +179,9 @@ header span{font-size:12px;color:#718096;background:#2d3748;padding:4px 10px;bor
 .apt{background:#2b210c;color:#fbbf24}
 .ptr{background:#1e1338;color:#c084fc}
 .c-out{background:#0f2236;color:#7dd3fc}
+.html{background:#2d1810;color:#fb923c}
+.css{background:#0e2341;color:#60a5fa}
+.js{background:#2b210c;color:#fbbf24}
 
 @media (max-width:700px){
 header{padding:14px 16px;align-items:flex-start;flex-direction:column;gap:10px}
@@ -223,6 +226,7 @@ header{padding:14px 16px;align-items:flex-start;flex-direction:column;gap:10px}
 <script src="josh-question-bank.js"></script>
 <script src="josh-master-question-bank.js"></script>
 <script src="josh-dsa-round-bank.js"></script>
+<script src="josh-frontend-oa-bank.js"></script>
 <script>
 const Q = [
 // ─── DSA (1–35) ───────────────────────────────────────────────────────────
@@ -530,6 +534,11 @@ const BANKS = {
     ...window.JOSH_MASTER_SET,
     countLimit: window.JOSH_MASTER_SET.quizMaxCount || 50,
     questions: shuffleQuestionOptions(window.JOSH_MASTER_SET.questions, 'jtm')
+  },
+  frontend: {
+    ...window.JOSH_FRONTEND_OA_SET,
+    countLimit: window.JOSH_FRONTEND_OA_SET.quizMaxCount || 50,
+    questions: shuffleQuestionOptions(window.JOSH_FRONTEND_OA_SET.questions, 'frontend')
   },
   dsaRounds: {
     ...window.JOSH_DSA_ROUND_SET
