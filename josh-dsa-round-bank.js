@@ -122,3 +122,76 @@ window.JOSH_DSA_ROUND_SET = {
     }
   ]
 };
+
+window.JOSH_DSA_JTG_FOCUSED_SET = {
+  id: 'jtgDsaFocused',
+  type: 'roundBank',
+  label: 'JTG DSA Focused',
+  title: 'Josh Technology Group - Focused DSA Coding Set',
+  badge: '20 round-wise DSA prompts',
+  description: 'Focused Josh Technology Group DSA coding questions from GFG Interview Experiences, Glassdoor, Medium, and InterviewBit cross-references. Prioritize comments, dry runs, and time/space complexity in every solution.',
+  subjectLabels: {ALL:'All',Array:'Array','Linked List':'Linked List','Binary Tree':'Binary Tree',BST:'BST',DP:'DP','Binary Search':'Binary Search',String:'String',Graph:'Graph',Stack:'Stack',BFS:'BFS',DFS:'DFS','Two Pointer':'Two Pointer'},
+  subjectOrder: ['ALL','Array','Linked List','Binary Tree','BST','DP','Binary Search','String','Graph','Stack','BFS','DFS','Two Pointer'],
+  rounds: [
+    {
+      short: 'R2',
+      name: 'Round 2 - Subjective Round',
+      badge: 'r2',
+      desc: '75 min, medium level, 3 coding plus 1 output-based question. Write full program, comments, and time/space complexity.',
+      questions: [
+        {t:'Move Zeroes: move all zeroes in an array to the end while maintaining the relative order of non-zero elements. Solve in O(n) time and O(1) space. LeetCode #283.',tags:['Array','Two Pointer'],diff:'easy',p:'LeetCode'},
+        {t:'Find Element at Equilibrium Index variant: find an element such that all elements on its left are strictly smaller and all elements on its right are strictly larger. Return -1 if no such element exists.',tags:['Array'],diff:'medium',p:'GFG'},
+        {t:'String Pattern Sequence: given a string of only I and D characters, form the minimum number with no digit repetition and all digits greater than 0 that follows the pattern. Print "String not found" if length is 0 and "String length exceeds" if length is greater than 8. Example: IDIDI -> 132546.',tags:['String','Stack'],diff:'medium',p:'GFG'},
+        {t:'Transform Binary Tree Children: make every left child node odd by subtracting 1 when required, and every right child node even by adding 1 when required. Solve in O(n) time and O(1) extra space.',tags:['Binary Tree'],diff:'medium',p:'JTG/GFG'}
+      ]
+    },
+    {
+      short: 'R3',
+      name: 'Round 3 - Coding Round 1',
+      badge: 'r3',
+      desc: '75 min, medium level, live proctoring. Comments are mandatory.',
+      questions: [
+        {t:'Count Good Nodes in Binary Tree: a node is good if no node on the root-to-node path has a value greater than it. Return the number of good nodes. LeetCode #1448.',tags:['Binary Tree','DFS'],diff:'medium',p:'LeetCode'},
+        {t:'Find Bottom-Left Tree Value: return the leftmost value in the last row of a binary tree. LeetCode #513.',tags:['Binary Tree','BFS'],diff:'medium',p:'LeetCode'},
+        {t:'Maximum Sum of Consecutive Elements in a Linked List: apply Kadane algorithm on linked-list nodes to find the maximum contiguous node-value sum.',tags:['Linked List','DP'],diff:'medium',p:'InterviewBit'},
+        {t:'Rearrange Array Around Pivot K: rearrange the array so elements less than K come first, elements greater than K come next, and all elements equal to K are placed at the end. Example: [6,7,2,5,4,9,8,5], K=5 -> [2,4,6,7,9,8,5,5].',tags:['Array','Two Pointer'],diff:'medium',p:'GFG'},
+        {t:'Increasing Triplet Subsequence: return true if there exist indices i < j < k such that nums[i] < nums[j] < nums[k]. Solve in O(n) time and O(1) space. LeetCode #334.',tags:['Array'],diff:'medium',p:'LeetCode'}
+      ]
+    },
+    {
+      short: 'R4',
+      name: 'Round 4 - Coding Round 2',
+      badge: 'r4',
+      desc: '75 min, medium-hard level, live proctoring with chat response required.',
+      questions: [
+        {t:'Largest BST in Binary Tree: find the size of the largest subtree that is also a valid BST. GFG Largest BST / LeetCode #333.',tags:['Binary Tree','BST','DP'],diff:'hard',p:'GFG/LeetCode'},
+        {t:'Maximum Sum of Non-Adjacent Nodes in Binary Tree: choose nodes for maximum sum such that no selected nodes have a parent-child relationship. House Robber III tree variant. LeetCode #337.',tags:['Binary Tree','DP'],diff:'hard',p:'LeetCode/GFG'},
+        {t:'Minimum Jumps to Cross a Bridge: bridge is represented by 1s and 0s where 1 is valid and 0 is broken; allowed jump lengths are given. Find the minimum jumps to reach the other end. Example bridge [1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,0,1], jumps [2,3,5,6] -> 4.',tags:['Array','Graph','DP'],diff:'hard',p:'InterviewBit'},
+        {t:'Burning Tree: given a binary tree and target node, return the minimum time to burn the entire tree when fire spreads to parent, left child, and right child every second. LeetCode #2385 / GFG Burning Tree.',tags:['Binary Tree','BFS','Graph'],diff:'hard',p:'LeetCode/GFG'}
+      ]
+    },
+    {
+      short: 'R5',
+      name: 'Round 5 - Technical Interview Round 1',
+      badge: 't1',
+      desc: '1-2 hrs, hard level. Usually 2 DSA questions with dry run and optimization discussion.',
+      questions: [
+        {t:'Rotate Sub-List of Linked List: rotate the linked-list sub-list from position M to N to the right by K places.',tags:['Linked List'],diff:'hard',p:'GFG'},
+        {t:'Maximum Sum of Non-Adjacent Array Elements: find the maximum sum of array elements such that no two selected elements are adjacent. LeetCode #198 variant.',tags:['Array','DP'],diff:'medium',p:'LeetCode/GFG'},
+        {t:'Zigzag Level Order Traversal of Binary Tree: return the level order traversal while alternating left-to-right and right-to-left order. LeetCode #103.',tags:['Binary Tree','BFS'],diff:'medium',p:'LeetCode/GFG'},
+        {t:'Binary Tree to Doubly Linked List: convert a binary tree to a DLL in-place using left as previous and right as next. The DLL must follow inorder traversal order.',tags:['Binary Tree','Linked List'],diff:'hard',p:'GFG'}
+      ]
+    },
+    {
+      short: 'R6',
+      name: 'Round 6 - Technical Interview Round 2',
+      badge: 't2',
+      desc: '2-3 hrs, hard level. Deep dive on binary search on answer and BST-style questions.',
+      questions: [
+        {t:'Koko Eating Bananas: given piles and H hours, find the minimum eating speed K such that all bananas are eaten within H hours. Binary search on answer. LeetCode #875.',tags:['Binary Search','Array'],diff:'medium',p:'LeetCode'},
+        {t:'Find All Pairs in BST with Sum K: given a BST where every node also has a parent pointer, find all pairs of nodes whose values sum to K.',tags:['BST','Two Pointer'],diff:'hard',p:'GFG'},
+        {t:'Sum of Nodes at Distance K from Root in Binary Tree: find the sum of all node values exactly K edges away from the root.',tags:['Binary Tree','BFS','DFS'],diff:'medium',p:'GFG/LeetCode'}
+      ]
+    }
+  ]
+};
